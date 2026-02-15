@@ -1,12 +1,16 @@
 RewriteEngine On
 
-# 1️⃣ Si empieza con /api → backend
-RewriteCond %{REQUEST_URI} ^/api
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ index.php [QSA,L]
+RewriteBase /backend/
 
-# 2️⃣ Todo lo demás → Angular
+# Si no es archivo ni carpeta real
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ index.html [L]
+
+# Enviar todo a index.php
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+
+# Seguridad
+RewriteRule ^app/ - [F,L]
+RewriteRule ^config/ - [F,L]
+RewriteRule ^storage/ - [F,L]
+RewriteRule ^vendor/ - [F,L]
