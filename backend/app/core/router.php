@@ -2,32 +2,49 @@
 
 class Router
 {
-    public function run()
+
+    public function dispatch(): void
     {
+        
         $url = $_GET['url'] ?? '';
 
-        $segments = explode('/', trim($url, '/'));
+        $url = trim($url, '/');
 
-        $controllerName = !empty($segments[0]) ? ucfirst($segments[0]) . 'Controller' : 'HomeController';
+        $segments = explode('/', $url);
 
-        $method = $segments[1] ?? 'index';
+        // CONTROLADOR
+        $controllerName = ucfirst($segments[0] ?? Config::$defaultController);
 
+        // METODO
+        $method = $segments[1] ?? Config::$defaultMethod;
+
+        // PARAMETROS
         $params = array_slice($segments, 2);
 
-        $controllerFile = "app/modules/" . strtolower($segments[0]) . "/" . $controllerName . ".php";
+        // RUTA ARCHIVO CONTROLADOR
+        $controllerFile = "app/modules/" . strtolower($controllerName) . "/controllers/" . $controllerName . ".php";
 
-        if (!file_exists($controllerFile)) {
-            jsonResponse(["error" => "Controller no existe"], 404);
+        if (!file_exists($controllerFile))
+        {
+            die("Archivo no existe: " . $controllerFile);
         }
 
         require_once $controllerFile;
 
+        if (!class_exists($controllerName))
+        {
+            die("Clase no existe: " . $controllerName);
+        }
+
         $controller = new $controllerName();
 
-        if (!method_exists($controller, $method)) {
-            jsonResponse(["error" => "Metodo no existe"], 404);
+        if (!method_exists($controller, $method))
+        {
+            die("Metodo no existe: " . $method);
         }
 
         call_user_func_array([$controller, $method], $params);
+
     }
+
 }

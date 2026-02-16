@@ -1,6 +1,6 @@
 RewriteEngine On
 
-RewriteBase /backend/
+RewriteBase /ERP/backend/
 
 # Si no es archivo ni carpeta real
 RewriteCond %{REQUEST_FILENAME} !-f
