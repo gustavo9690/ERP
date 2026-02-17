@@ -7,14 +7,13 @@ class Router
     {
         
         $url = $_GET['url'] ?? '';
-
+       
         $url = trim($url, '/');
 
         $segments = explode('/', $url);
 
         // CONTROLADOR
-        $controllerName = ucfirst($segments[0] ?? Config::$defaultController);
-
+        $controllerName = !empty($controllerSegment)?ucfirst($controllerSegment):Config::$defaultController;
         // METODO
         $method = $segments[1] ?? Config::$defaultMethod;
 

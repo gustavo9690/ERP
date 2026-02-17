@@ -2,6 +2,6 @@
 
 class Config
 {
-    public static $defaultController = 'welcome';
+    public static $defaultController = 'Welcome';
     public static $defaultMethod = 'index';
 }
