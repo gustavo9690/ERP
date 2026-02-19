@@ -1,25 +1,44 @@
-<div class="login-container">
-  <h2>Iniciar Sesión</h2>
+<div class="login-wrapper">
 
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <mat-card class="login-card">
 
-    <div>
-      <label>Usuario</label>
-      <input type="text" formControlName="username">
-    </div>
+    <h2>Iniciar Sesión</h2>
 
-    <div>
-      <label>Contraseña</label>
-      <input type="password" formControlName="password">
-    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-    <button type="submit" [disabled]="loading">
-      {{ loading ? 'Ingresando...' : 'Ingresar' }}
-    </button>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Usuario</mat-label>
+        <input matInput formControlName="username">
+        <mat-icon matSuffix>person</mat-icon>
+      </mat-form-field>
 
-    <div *ngIf="errorMessage" style="color:red;">
-      {{ errorMessage }}
-    </div>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Contraseña</mat-label>
+        <input matInput [type]="hidePassword ? 'password' : 'text'"
+               formControlName="password">
+        <button mat-icon-button matSuffix type="button"
+                (click)="hidePassword = !hidePassword">
+          <mat-icon>
+            {{ hidePassword ? 'visibility_off' : 'visibility' }}
+          </mat-icon>
+        </button>
+      </mat-form-field>
 
-  </form>
+      <button mat-raised-button color="primary"
+              class="full-width"
+              type="submit"
+              [disabled]="loading">
+
+        <mat-spinner *ngIf="loading"
+                     diameter="20">
+        </mat-spinner>
+
+        <span *ngIf="!loading">Ingresar</span>
+
+      </button>
+
+    </form>
+
+  </mat-card>
+
 </div>
