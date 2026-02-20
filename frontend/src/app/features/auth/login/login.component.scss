@@ -1,5 +1,5 @@
 .login-wrapper {
-  height: 100vh;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,9 +10,39 @@
   max-width: 400px;
   padding: 30px;
   border-radius: 12px;
+  border: 1px solid;
+  border-color: #e0e0e0;
+  box-shadow: 0px 10px 20px 20px rgba(0, 0, 0, 0.1);
 }
 
 .full-width {
   width: 100%;
   margin-bottom: 15px;
+}
+
+
+.titulo_login {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.login-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #144AA7 !important;
+  color: white !important;
+} 
+
+/* Force spinner stroke to white inside the login button */
+/* Force spinner color to white (primary method) */
+.white-spinner {
+  color: #ffffff !important;
+}
+
+/* Fallbacks: target the generated SVG circle and common material classes */
+::ng-deep .white-spinner svg circle,
+::ng-deep .white-spinner .mat-progress-spinner circle,
+::ng-deep .white-spinner .mat-progress-spinner .mat-progress-spinner-circle {
+  stroke: #ffffff !important;
 }

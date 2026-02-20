@@ -1,9 +1,8 @@
 <div class="login-wrapper">
 
   <mat-card class="login-card">
-
-    <h2>Iniciar Sesión</h2>
-
+    <img src="assets/images/logo.png" class="logo">
+    <h2 class="titulo_login">Iniciar Sesión</h2>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
       <mat-form-field appearance="outline" class="full-width">
@@ -24,18 +23,20 @@
         </button>
       </mat-form-field>
 
-      <button mat-raised-button color="primary"
-              class="full-width"
+      <button mat-raised-button color="accent"
+              class="full-width login-button"
               type="submit"
               [disabled]="loading">
 
-        <mat-spinner *ngIf="loading"
-                     diameter="20">
+        <mat-spinner class="white-spinner" *ngIf="loading"
+               diameter="20">
         </mat-spinner>
 
         <span *ngIf="!loading">Ingresar</span>
 
       </button>
+
+      
 
     </form>
 
