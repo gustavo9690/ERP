@@ -1,0 +1,28 @@
+.sidebar {
+  width: 250px;
+  background: #033b6c;
+  color: white;
+  padding: 20px;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.logo img {
+  width: 120px;
+}
+
+nav a {
+  display: block;
+  padding: 10px;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+nav a:hover,
+.active {
+  background: #519af5;
+}
