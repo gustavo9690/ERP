@@ -3,7 +3,9 @@ import { AUTH_ROUTES } from './features/auth/auth.routes';
 import { DASHBOARD_ROUTES } from './features/dashboard/dashboard.routes';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
-import { EMPLEADO_ROUTES } from './features/empleado/empleado.routes';
+import { authGuard } from './core/guards/auth.guard';
+import { guestGuard } from './core/guards/guest.guard';
+import { RRHH_ROUTES } from './features/rrhh/rrhh.routes';
 
 
 
@@ -11,29 +13,50 @@ export const routes: Routes = [
 
     { path: '', redirectTo: 'login', pathMatch: 'full' },
 
-    // Auth Layout
+    // 🔐 AUTH LAYOUT
     {
-        path: 'login',
+        path: '',
         component: AuthLayoutComponent,
-        children: AUTH_ROUTES
+        canActivate: [guestGuard],
+        children: [
+        {
+            path: 'login',
+            children: AUTH_ROUTES
+        }
+        ]
     },
 
    
-    // Main Layout
+     // 🏠 MAIN LAYOUT (PROTEGIDO)
     {
-        path: 'dashboard',
+        path: '',
         component: MainLayoutComponent,
+        canActivate: [authGuard],
         children: [
-            ...DASHBOARD_ROUTES
+
+        {
+            path: 'dashboard',
+            children: DASHBOARD_ROUTES
+        },
+
+        {
+            path: 'rrhh',
+            children: RRHH_ROUTES
+        },
+
+        {
+            path: 'logistica',
+            children: RRHH_ROUTES
+        }
+
         ]
     },
 
+    // 🚫 404
     {
-        path: 'empleado',
-        component: MainLayoutComponent,
-        children: [
-            ...EMPLEADO_ROUTES
-        ]
+        path: '**',
+        redirectTo: 'dashboard'
     }
+
 
 ];

@@ -30,7 +30,11 @@ abstract class Model
 
     protected function execute(string $sql, array $params = []): bool
     {
-        return $this->query($sql, $params)
-                    ->rowCount() > 0;
+        return $this->query($sql, $params)->rowCount() > 0;
+    }
+
+    protected function lastInsertId()
+    {
+        return $this->db->lastInsertId();
     }
 }

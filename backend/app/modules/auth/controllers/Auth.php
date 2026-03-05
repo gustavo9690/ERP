@@ -1,48 +1,59 @@
 <?php
 class Auth extends Controller
 {
-    private M_auth $m_auth;
+    private Usuario $usuario;
+    private Empleado $empleado;
 
     public function __construct()
     {
-        $this->m_auth = new M_auth();
+        $this->usuario = new Usuario();
+        $this->empleado = new Empleado();
     }
 
     public function login()
     {
-        $input = json_decode(file_get_contents("php://input"), true);
+        $data = json_decode(file_get_contents("php://input"), true);
 
-        $usuario = $input['usuario'] ?? '';
-        $clave = $input['clave'] ?? '';
+        $usuarioInput = $data['usuario'] ?? null;
+        $claveInput   = $data['clave'] ?? null;
 
-        if (!$usuario || !$clave) {
-            Response::json([
-                'success' => false,
-                'message' => 'Datos incompletos'
-            ], 400);
+        if (!$usuarioInput || !$claveInput) {
+            http_response_code(401);
+            echo json_encode(["error" => "Usuario y clave requeridos"]);
+            return;
         }
 
-        $user = $this->m_auth->getUserByUsuario($usuario);
+        $usuarios = Usuario::findByUsuarioAndEstado($usuarioInput, 1);
 
-        if (!$user || !password_verify($clave, $user['clave'])) {
-            Response::json([
-                'success' => false,
-                'message' => 'Credenciales incorrectas'
-            ], 401);
+        if (empty($usuarios)) {
+            http_response_code(401);
+            echo json_encode(["error" => "Usuario no existente o inactivo"]);
+            return;
         }
 
-        $token = JwtHelper::generate([
-            'id' => $user['id'],
-            'usuario' => $user['usuario'],
+        $usuario = new Usuario($usuarios[0]);
+
+        // 🔐 VALIDACIÓN MD5
+        if ($usuario->clave !== md5($claveInput)) {
+            http_response_code(401);
+            echo json_encode(["error" => "Clave incorrecta"]);
+            return;
+        }
+
+        $empleado = Empleado::find($usuario->idEmpleado);
+
+         $token = JwtHelper::generate([
+            "id" => $usuario->idUsuario,
+            "id_usuario" => $usuario->idUsuario,
+            "email" => $usuario->usuario,
+            "id_empresa" => $empleado->idEmpresa,
+            "nombres" => $empleado->nombres,
+            "apellido_paterno" => $empleado->apellidoPaterno,
+            "apellido_materno" => $empleado->apellidoMaterno
         ]);
 
-        Response::json([
-            'success' => true,
-            'token' => $token,
-            'user' => [
-                'id' => $user['id'],
-                'nombre' => $user['nombre']
-            ]
+        echo json_encode([
+            "token" => $token
         ]);
     }
 }

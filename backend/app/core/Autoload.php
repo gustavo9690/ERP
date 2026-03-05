@@ -36,6 +36,7 @@ class Autoload
             $directories[] = $module . '/controllers/';
             $directories[] = $module . '/models/';
             $directories[] = $module . '/services/';
+            $directories[] = $module . '/entities/';
         }
 
         // buscar archivo

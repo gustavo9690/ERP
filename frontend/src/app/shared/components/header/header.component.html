@@ -1,7 +1,21 @@
-<header class="header">
-  <span>Panel de Control</span>
-
-  <div class="user">
-    Gustavo
+<nav class="topbar">
+  <div class="topbar-left">
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="GP Systems">
+    </div>
   </div>
-</header>
+  <div class="topbar-center">
+    <a 
+      *ngFor="let modulo of menu"
+      [routerLink]="'/' + modulo.key"
+      routerLinkActive="active"
+      class="top-link">
+      {{ modulo.label }}
+    </a>
+  </div>
+  <div class="topbar-right">
+    <div class="user">
+     {{ user?.nombres }} {{ user?.apellido_paterno }} {{ user?.apellido_materno }}
+    </div>
+  </div>
+</nav>

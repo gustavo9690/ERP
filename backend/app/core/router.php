@@ -13,6 +13,7 @@ class Router
         $segments = explode('/', $url);
 
         // CONTROLADOR
+        $controllerSegment = $segments[0] ?? '';
         $controllerName = !empty($controllerSegment)?ucfirst($controllerSegment):Config::$defaultController;
         // METODO
         $method = $segments[1] ?? Config::$defaultMethod;

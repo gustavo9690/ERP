@@ -1,28 +1,114 @@
+/* ===== SIDEBAR CONTAINER ===== */
 .sidebar {
-  width: 250px;
-  background: #033b6c;
-  color: white;
-  padding: 20px;
+  width: 260px;
+  height: 100vh;
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
 }
 
-.logo {
-  text-align: center;
-  margin-bottom: 30px;
+/* ===== LIST RESET ===== */
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-top: 100px;
 }
 
-.logo img {
-  width: 120px;
+/* ===== LIST ITEMS ===== */
+.sidebar li {
+  margin-bottom: 5px;
 }
 
-nav a {
+/* ===== PARENT BUTTON (SUBMENU) ===== */
+.sidebar button {
+  width: 100%;
+  background: none;
+  border: none;
+  color: #cbd5e1;
+  text-align: left;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar button:hover {
+  background: #334155;
+  color: #ffffff;
+}
+
+/* ===== NORMAL LINKS ===== */
+.sidebar a {
   display: block;
-  padding: 10px;
-  color: white;
   text-decoration: none;
-  border-radius: 5px;
+  color: #cbd5e1;
+  padding: 10px 35px;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  border-left: 4px solid transparent;
 }
 
-nav a:hover,
-.active {
-  background: #519af5;
+.sidebar a:hover {
+  background: #334155;
+  color: #ffffff;
+}
+
+/* ===== ACTIVE LINK ===== */
+.sidebar a.active {
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 500;
+  border-left: 4px solid #60a5fa;
+}
+
+/* ===== SUBMENU STYLE ===== */
+.sidebar ul ul {
+  margin-top: 5px;
+  padding-left: 10px;
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+/* ===== ARROW ICON ===== */
+.arrow {
+  transition: transform 0.2s ease;
+  font-size: 12px;
+}
+
+.arrow.open {
+  transform: rotate(90deg);
+}
+
+/* ===== SCROLLBAR (BONUS ESTILO PRO) ===== */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+
+/* ===== ANIMATION ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

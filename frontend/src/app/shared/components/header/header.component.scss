@@ -1,9 +1,76 @@
-.header {
-  height: 60px;
+.logo {
+  text-align: center;
   background: white;
+  height: 60px;
+}
+
+.logo img {
+  height: 55px;
+}
+
+/* ===== TOPBAR CONTAINER ===== */
+.topbar {
+  height: 60px;
+  width: 100%;
+  background: #0f172a;
+  color: #e2e8f0;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+}
+
+/* ===== LEFT SECTION ===== */
+.topbar-left .logo {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #60a5fa;
+}
+
+/* ===== CENTER LINKS ===== */
+
+
+.top-link {
+  text-decoration: none;
+  color: #cbd5e1;
+  font-size: 14px;
+  padding: 8px 4px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.top-link:hover {
+  color: #ffffff;
+}
+
+/* ===== ACTIVE MODULE ===== */
+.top-link.active {
+  color: #ffffff;
+}
+
+.top-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #2563eb;
+  border-radius: 2px;
+}
+
+/* ===== RIGHT SECTION ===== */
+.topbar-right .user {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .topbar-center {
+    gap: 15px;
+  }
+
+  .top-link {
+    font-size: 12px;
+  }
 }

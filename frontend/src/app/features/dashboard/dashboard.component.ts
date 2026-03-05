@@ -11,8 +11,11 @@ import { Component } from "@angular/core";
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
-    empresas = 12;
-    usuarios = 48;
-    ventas = 25300;
-    modulos = 8;
+
+  empresas = 12;
+  usuarios = 48;
+  ventas = 25300;
+  modulos = 8;
+
+
 }
