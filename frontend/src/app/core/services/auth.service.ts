@@ -17,15 +17,24 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(usuario: string, clave: string) {
-    return this.http.post<any>(`${this.apiUrl}/auth/login`, {
+    return this.http.post<any>(`${this.apiUrl}/auth/auth/login`, {
       usuario,
       clave
     }).pipe(
       tap(response => {
-        localStorage.setItem('token', response.token);
-
-        const payload = JSON.parse(atob(response.token.split('.')[1]));
-        this.userSubject.next(payload.data); // 👈 actualiza usuario
+        if (response.success === true || response.status === 'success') {
+          const token = response.data?.token || response.token;
+          if (token) {
+            localStorage.setItem('token', token);
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            this.userSubject.next(payload);
+          }
+        } else if (response.success === false || response.status === 'error') {
+          const errorMessage = response.error || response.message || 'Credenciales incorrectas';
+          throw new Error(errorMessage);
+        } else {
+          throw new Error('Respuesta inesperada del servidor');
+        }
       })
     );
   }

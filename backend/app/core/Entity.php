@@ -88,10 +88,10 @@ abstract class Entity extends Model
     protected static function mapAll(array $rows): array
     {
         return array_map(function ($row) {
-            return static::map($row)->toArray();
+            return static::map($row);
         }, $rows);
     }
-
+    
     /* =====================================================
        FIND POR ID
     ===================================================== */

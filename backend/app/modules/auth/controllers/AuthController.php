@@ -1,13 +1,13 @@
 <?php
-class Auth extends Controller
+class AuthController extends Controller
 {
-    private Usuario $usuario;
-    private Empleado $empleado;
+    private UsuarioEntity $usuario;
+    private EmpleadoEntity $empleado;
 
     public function __construct()
     {
-        $this->usuario = new Usuario();
-        $this->empleado = new Empleado();
+        $this->usuario = new UsuarioEntity();
+        $this->empleado = new EmpleadoEntity();
     }
 
     public function login()
@@ -18,31 +18,26 @@ class Auth extends Controller
         $claveInput   = $data['clave'] ?? null;
 
         if (!$usuarioInput || !$claveInput) {
-            http_response_code(401);
-            echo json_encode(["error" => "Usuario y clave requeridos"]);
-            return;
+            Response::error("Usuario y clave requeridos", 401);
         }
 
-        $usuarios = Usuario::findByUsuarioAndEstado($usuarioInput, 1);
+
+        $usuarios = UsuarioEntity::findByUsuarioAndEstado($usuarioInput, 1);
 
         if (empty($usuarios)) {
-            http_response_code(401);
-            echo json_encode(["error" => "Usuario no existente o inactivo"]);
-            return;
+            Response::error("Usuario no existente o inactivo", 401);
         }
 
-        $usuario = new Usuario($usuarios[0]);
+        $usuario = new UsuarioEntity($usuarios[0]->toarray());
 
         // 🔐 VALIDACIÓN MD5
         if ($usuario->clave !== md5($claveInput)) {
-            http_response_code(401);
-            echo json_encode(["error" => "Clave incorrecta"]);
-            return;
+            Response::error("Clave incorrecta",401);
         }
 
-        $empleado = Empleado::find($usuario->idEmpleado);
+        $empleado = EmpleadoEntity::find($usuario->idEmpleado);
 
-         $token = JwtHelper::generate([
+        $token = JwtHelper::generate([
             "id" => $usuario->idUsuario,
             "id_usuario" => $usuario->idUsuario,
             "email" => $usuario->usuario,
@@ -52,8 +47,9 @@ class Auth extends Controller
             "apellido_materno" => $empleado->apellidoMaterno
         ]);
 
-        echo json_encode([
+        Response::success([
             "token" => $token
         ]);
+
     }
 }

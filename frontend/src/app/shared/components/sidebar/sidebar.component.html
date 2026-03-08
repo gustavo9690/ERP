@@ -1,40 +1,61 @@
 <div class="sidebar">
-  <ul *ngIf="moduloActivo">
 
-  <li *ngFor="let item of moduloActivo.items">
+  <ul class="menu" *ngIf="moduloActivo">
 
-    <!-- 🔹 SI TIENE HIJOS -->
-    <div *ngIf="item.children">
+    <li *ngFor="let item of moduloActivo.items" class="menu-item">
 
-      <!-- IMPORTANTE: type="button" -->
-      <button type="button" (click)="toggleMenu(item.label)">
-        {{ item.label }}
-      </button>
+      <!-- ITEM CON SUBMENÚ -->
+      <div *ngIf="item.children; else simpleItem">
 
-      <ul *ngIf="isOpen(item.label)">
-        <li *ngFor="let sub of item.children">
-          <a
-            [routerLink]="sub.route"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }">
-            {{ sub.label }}
-          </a>
-        </li>
-      </ul>
+        <button 
+          type="button"
+          class="menu-button"
+          (click)="toggleMenu(item.label)">
 
-    </div>
+          {{ item.label }}
 
-    <!-- 🔹 SI NO TIENE HIJOS -->
-    <div *ngIf="!item.children">
-      <a
-        [routerLink]="item.route"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">
-        {{ item.label }}
-      </a>
-    </div>
+          <span class="arrow" [class.open]="isOpen(item.label)">
+            ▾
+          </span>
 
-  </li>
+        </button>
 
-</ul>
+        <ul class="submenu" *ngIf="isOpen(item.label)">
+
+          <li *ngFor="let sub of item.children">
+
+            <a
+              [routerLink]="sub.route"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }">
+
+              {{ sub.label }}
+
+            </a>
+
+          </li>
+
+        </ul>
+
+      </div>
+
+      <!-- ITEM SIMPLE -->
+      <ng-template #simpleItem>
+
+        <a
+          class="menu-link"
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+
+          {{ item.label }}
+
+        </a>
+
+      </ng-template>
+
+    </li>
+
+  </ul>
+
 </div>

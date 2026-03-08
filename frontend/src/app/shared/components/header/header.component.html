@@ -1,21 +1,40 @@
 <nav class="topbar">
+
+  <!-- LEFT -->
   <div class="topbar-left">
+
+    <button class="menu-btn" (click)="toggleMenu()">
+      ☰
+    </button>
+
     <div class="logo">
       <img src="assets/images/logo.png" alt="GP Systems">
     </div>
+
   </div>
+
+  <!-- CENTER -->
   <div class="topbar-center">
+
     <a 
       *ngFor="let modulo of menu"
       [routerLink]="'/' + modulo.key"
       routerLinkActive="active"
       class="top-link">
+
       {{ modulo.label }}
+
     </a>
+
   </div>
+
+  <!-- RIGHT -->
   <div class="topbar-right">
+
     <div class="user">
-     {{ user?.nombres }} {{ user?.apellido_paterno }} {{ user?.apellido_materno }}
+      {{ user?.nombres }} {{ user?.apellido_paterno }} {{ user?.apellido_materno }}
     </div>
+
   </div>
+
 </nav>

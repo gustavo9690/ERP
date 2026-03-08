@@ -14,6 +14,7 @@ class Config
     public static string $baseUrl = 'http://localhost/erp/';
 
     // Controlador y método por defecto
+    public static string $defaultModule = 'welcome';
     public static string $defaultController = 'Welcome';
     public static string $defaultMethod = 'index';
 

@@ -1,114 +1,85 @@
-/* ===== SIDEBAR CONTAINER ===== */
-.sidebar {
-  width: 260px;
-  height: 100vh;
-  background: #1e293b;
-  color: #e2e8f0;
-  padding: 20px 0;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
-  overflow-y: auto;
+.sidebar{
+  width:250px;
+  height:100vh;
+  background:#ffffff;
+  color:#144AA7;
+  padding-top:10px;
 }
 
-/* ===== LIST RESET ===== */
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  margin-top: 100px;
+/* MENU */
+
+.menu{
+  list-style:none;
+  padding:0;
+  margin:0;
 }
 
-/* ===== LIST ITEMS ===== */
-.sidebar li {
-  margin-bottom: 5px;
+/* ITEM */
+
+.menu-item{
+  width:100%;
 }
 
-/* ===== PARENT BUTTON (SUBMENU) ===== */
-.sidebar button {
-  width: 100%;
-  background: none;
-  border: none;
-  color: #cbd5e1;
-  text-align: left;
-  padding: 12px 20px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s ease;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* BUTTON (padres) */
+
+.menu-button{
+  width:100%;
+  background:none;
+  border:none;
+  color:#144AA7;
+  padding:10px 16px;
+  text-align:left;
+  cursor:pointer;
+  font-size:14px;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-.sidebar button:hover {
-  background: #334155;
-  color: #ffffff;
+.menu-button:hover{
+  background:#144AA7;
+  color:#ffffff;
 }
 
-/* ===== NORMAL LINKS ===== */
-.sidebar a {
-  display: block;
-  text-decoration: none;
-  color: #cbd5e1;
-  padding: 10px 35px;
-  font-size: 13px;
-  transition: all 0.2s ease;
-  border-left: 4px solid transparent;
+/* SUBMENU */
+
+.submenu{
+  list-style:none;
+  padding-left:15px;
 }
 
-.sidebar a:hover {
-  background: #334155;
-  color: #ffffff;
+/* LINKS */
+
+.menu-link,
+.submenu a{
+  display:block;
+  padding:8px 16px;
+  text-decoration:none;
+  color:#144AA7;
+  font-size:13px;
 }
 
-/* ===== ACTIVE LINK ===== */
-.sidebar a.active {
-  background: #2563eb;
-  color: #ffffff;
-  font-weight: 500;
-  border-left: 4px solid #60a5fa;
+.menu-link:hover,
+.submenu a:hover{
+  background:#144AA7;
+  color:#ffffff;
 }
 
-/* ===== SUBMENU STYLE ===== */
-.sidebar ul ul {
-  margin-top: 5px;
-  padding-left: 10px;
-  border-left: 1px solid rgba(255, 255, 255, 0.05);
-  animation: fadeIn 0.2s ease-in-out;
+/* ACTIVE */
+
+.active{
+  background:#144AA7;
+  color:#ffffff !important;
+  border-radius:4px;
 }
 
-/* ===== ARROW ICON ===== */
-.arrow {
-  transition: transform 0.2s ease;
-  font-size: 12px;
+/* ARROW */
+
+.arrow{
+  transition:0.2s;
 }
 
-.arrow.open {
-  transform: rotate(90deg);
-}
-
-/* ===== SCROLLBAR (BONUS ESTILO PRO) ===== */
-.sidebar::-webkit-scrollbar {
-  width: 6px;
-}
-
-.sidebar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 4px;
-}
-
-/* ===== ANIMATION ===== */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.arrow.open{
+  transform:rotate(180deg);
 }

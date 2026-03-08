@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MENU_CONFIG } from '../../../core/config/menu.config';
 import { filter } from 'rxjs/internal/operators/filter';
@@ -42,6 +42,12 @@ export class HeaderComponent {
 
   esActivo(key: string): boolean {
     return this.moduloActivo === key;
+  }
+
+  @Output() toggleSidebar = new EventEmitter<void>();
+
+  toggleMenu() {
+    this.toggleSidebar.emit();
   }
 
 }

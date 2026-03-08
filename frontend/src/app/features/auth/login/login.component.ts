@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -32,11 +32,13 @@ export class LoginComponent {
   loginForm: FormGroup;
   hidePassword = true;
   loading = false;
+  errorMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -48,6 +50,7 @@ export class LoginComponent {
     if (this.loginForm.invalid) return;
 
     this.loading = true;
+    this.errorMessage = ''; // Limpiar mensaje de error anterior
 
     const { username, password } = this.loginForm.value;
 
@@ -55,11 +58,14 @@ export class LoginComponent {
       .subscribe({
         next: () => {
           this.router.navigate(['/dashboard']);
-          this.loading = false;
         },
-        error: () => {
+        error: (error) => {
           this.loading = false;
-          alert('Credenciales incorrectas');
+          this.errorMessage = error.message || 'Error de autenticación';
+          this.cdr.detectChanges();
+        },
+        complete: () => {
+          this.loading = false;
         }
       });
   }

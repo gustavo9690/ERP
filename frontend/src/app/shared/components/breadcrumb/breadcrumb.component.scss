@@ -1,0 +1,27 @@
+.breadcrumb {
+  padding: 10px 0;
+  font-size: 14px;
+}
+
+.breadcrumb ul {
+  list-style: none;
+  display: flex;
+  gap: 5px;
+  padding: 0;
+  margin: 0;
+}
+
+.breadcrumb a {
+  text-decoration: none;
+  color: #1976d2;
+}
+
+.breadcrumb .active {
+  font-weight: 600;
+  color: #555;
+}
+
+.separator {
+  margin: 0 5px;
+  color: #aaa;
+}

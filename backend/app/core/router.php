@@ -7,22 +7,25 @@ class Router
     {
         
         $url = $_GET['url'] ?? '';
-       
         $url = trim($url, '/');
 
         $segments = explode('/', $url);
 
+        // MODULO
+        $module = !empty($segments[0]) ? strtolower($segments[0]) : Config::$defaultModule;
+
         // CONTROLADOR
-        $controllerSegment = $segments[0] ?? '';
-        $controllerName = !empty($controllerSegment)?ucfirst($controllerSegment):Config::$defaultController;
+        $controllerSegment = $segments[1] ?? Config::$defaultController;
+        $controllerName = ucfirst($controllerSegment)."Controller";
+
         // METODO
-        $method = $segments[1] ?? Config::$defaultMethod;
+        $method = $segments[2] ?? Config::$defaultMethod;
 
         // PARAMETROS
-        $params = array_slice($segments, 2);
+        $params = array_slice($segments, 3);
 
-        // RUTA ARCHIVO CONTROLADOR
-        $controllerFile = "app/modules/" . strtolower($controllerName) . "/controllers/" . $controllerName . ".php";
+        // RUTA CONTROLADOR
+        $controllerFile = "app/modules/" . strtolower($module) . "/controllers/" . $controllerName . ".php";
 
         if (!file_exists($controllerFile))
         {

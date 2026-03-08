@@ -1,76 +1,92 @@
-.logo {
-  text-align: center;
-  background: white;
-  height: 60px;
+/* ===== TOPBAR ===== */
+
+.topbar{
+  height:60px;
+  width:100%;
+  background:#144AA7;
+  color:#e2e8f0;
+
+  display:flex;
+  align-items:center;
 }
 
-.logo img {
-  height: 55px;
+/* LEFT */
+
+.topbar-left{
+  width:17%;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding-left:10px;
 }
 
-/* ===== TOPBAR CONTAINER ===== */
-.topbar {
-  height: 60px;
-  width: 100%;
-  background: #0f172a;
-  color: #e2e8f0;
-  display: flex;
-
+.logo img{
+  height:40px;
+}
+.logo{
+  background:#ffffff;
 }
 
-/* ===== LEFT SECTION ===== */
-.topbar-left .logo {
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  color: #60a5fa;
+/* BUTTON */
+
+.menu-btn{
+  background:none;
+  border:none;
+  color:white;
+  font-size:20px;
+  cursor:pointer;
 }
 
-/* ===== CENTER LINKS ===== */
+/* CENTER */
 
-
-.top-link {
-  text-decoration: none;
-  color: #cbd5e1;
-  font-size: 14px;
-  padding: 8px 4px;
-  position: relative;
-  transition: all 0.2s ease;
+.topbar-center{
+  width:63%;
+  display:flex;
+  align-items:center;
+  gap:25px;
 }
 
-.top-link:hover {
-  color: #ffffff;
+/* LINKS */
+
+.top-link{
+  text-decoration:none;
+  color:#cbd5e1;
+  font-size:14px;
+  padding:8px 4px;
+  position:relative;
 }
 
-/* ===== ACTIVE MODULE ===== */
-.top-link.active {
-  color: #ffffff;
+.top-link:hover{
+  color:white;
 }
 
-.top-link.active::after {
-  content: "";
-  position: absolute;
-  bottom: -8px;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: #2563eb;
-  border-radius: 2px;
+/* ACTIVE */
+
+.top-link.active{
+  color:white;
 }
 
-/* ===== RIGHT SECTION ===== */
-.topbar-right .user {
-  font-size: 13px;
-  color: #94a3b8;
+.top-link.active::after{
+  content:"";
+  position:absolute;
+  bottom:-8px;
+  left:0;
+  width:100%;
+  height:3px;
+  background:#ffffff;
+  border-radius:2px;
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-  .topbar-center {
-    gap: 15px;
-  }
+/* RIGHT */
 
-  .top-link {
-    font-size: 12px;
-  }
+.topbar-right{
+  width:20%;
+  display:flex;
+  justify-content:flex-end;
+  padding-right:20px;
+}
+
+.user{
+  font-size:13px;
+  color:#94a3b8;
 }

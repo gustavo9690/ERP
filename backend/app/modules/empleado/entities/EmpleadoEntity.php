@@ -1,6 +1,6 @@
 <?php
 
-class Empleado extends Entity
+class EmpleadoEntity extends Entity
 {
     protected static string $table = 'empleado';
     protected static string $primaryKey = 'id_empleado';

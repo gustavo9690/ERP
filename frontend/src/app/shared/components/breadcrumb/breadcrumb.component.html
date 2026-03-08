@@ -1,0 +1,15 @@
+<nav class="breadcrumb">
+
+  <a routerLink="/dashboard">Inicio</a>
+
+  <ng-container *ngFor="let bc of breadcrumbs">
+
+    <span> / </span>
+
+    <a [routerLink]="bc.url">
+      {{ bc.label }}
+    </a>
+
+  </ng-container>
+
+</nav>
