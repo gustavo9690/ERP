@@ -2,7 +2,7 @@
 
 class EmpleadoEntity extends Entity
 {
-    protected static string $table = 'empleado';
+    protected static string $table = 'empleados';
     protected static string $primaryKey = 'id_empleado';
 
     protected static bool $softDelete = true;

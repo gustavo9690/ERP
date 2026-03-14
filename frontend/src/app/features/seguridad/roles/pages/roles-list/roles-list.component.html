@@ -1,4 +1,4 @@
-<mat-card>
+
 
   <h2>Roles</h2>
 
@@ -11,13 +11,14 @@
     {{ error }}
   </div>
 
-  <table *ngIf="!loading && !error && roles.length > 0">
-
+<div class="table-container">
+  <table class="erp-table" *ngIf="!loading && !error && roles.length > 0">
     <thead>
       <tr>
         <th>ID</th>
         <th>Nombre</th>
         <th>Descripción</th>
+        <th>Estado</th>
         <th>Acciones</th>
       </tr>
     </thead>
@@ -27,23 +28,22 @@
         <td>{{ rol.idRol }}</td>
         <td>{{ rol.nombre }}</td>
         <td>{{ rol.descripcion }}</td>
-
-        <td>
-          <button mat-icon-button color="primary">
-            <mat-icon>edit</mat-icon>
-          </button>
-
-          <button mat-icon-button color="warn">
-            <mat-icon>delete</mat-icon>
-          </button>
+        <td>  
+          <span 
+            class="estado activo">
+            Activo
+          </span>
+        </td>
+        <td class="acciones">
+            <i class="fa fa-pen icon editar"></i>
+            <i class="fa fa-trash icon eliminar"></i>
         </td>
       </tr>
     </tbody>
 
   </table>
-
+</div>
   <div class="empty" *ngIf="!loading && !error && roles.length === 0">
     No hay roles registrados.
   </div>
 
-</mat-card>

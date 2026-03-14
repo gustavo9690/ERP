@@ -1,0 +1,42 @@
+<h2>Roles</h2>
+
+<button routerLink="/seguridad/roles/nuevo">
+  Nuevo Rol
+</button>
+
+<table>
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Nombre</th>
+<th>Descripción</th>
+<th>Acciones</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr *ngFor="let rol of roles">
+
+<td>{{rol.idRol}}</td>
+<td>{{rol.nombre}}</td>
+<td>{{rol.descripcion}}</td>
+
+<td>
+
+<button >
+Editar
+</button>
+
+<button>
+Eliminar
+</button>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>

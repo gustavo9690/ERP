@@ -17,20 +17,15 @@ export const MENU_CONFIG = [
     ]
   },
 
-   {
-    key: 'logistica',
-    label: 'Logística',
+  {
+    key: 'seguridad',
+    label: 'Seguridad',
     items: [
       {
-        label: 'Productos',
-       children: [
-          { label: 'Lista', route: '/rrhh/empleado/lista' },
-          { label: 'Detalle', route: '/rrhh/empleado/detalle' }
+        label: 'Roles',
+        children: [
+          { label: 'Lista', route: '/seguridad/roles/lista' }
         ]
-      },
-      {
-        label: 'Marcas',
-        route: '/rrhh/empleado/detalle'
       }
     ]
   }

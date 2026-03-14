@@ -47,14 +47,18 @@ abstract class Entity extends Model
 
         foreach (static::$fields as $property => $column) {
 
-            $value = $this->attributes[$property] ?? null;
+            if (!array_key_exists($property, $this->attributes)) {
+                continue;
+            }
 
-            // 🚀 1️⃣ No enviar NULL
+            $value = $this->attributes[$property];
+
+            // 🚀 no enviar NULL
             if ($value === null) {
                 continue;
             }
 
-            // 🚀 2️⃣ No enviar primary key si es null (autoincrement)
+            // 🚀 no enviar primary key si es null
             if ($column === static::$primaryKey && $value === null) {
                 continue;
             }
@@ -158,7 +162,7 @@ abstract class Entity extends Model
         ));
 
         $sql = "UPDATE $table SET $set WHERE $pkColumn = :pk";
-
+        
         $data['pk'] = $id;
 
         return $this->execute($sql, $data);
