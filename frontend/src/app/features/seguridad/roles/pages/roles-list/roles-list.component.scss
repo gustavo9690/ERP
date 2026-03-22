@@ -12,13 +12,14 @@
 }
 
 .erp-table thead{
-  background:#f4f6f9;
+  background:#144AA7;
+  color: #ffffff;
 }
 
 .erp-table th{
   text-align:left;
   padding:12px;
-  font-weight:600;
+  font-weight:normal;
   border-bottom:1px solid #e5e7eb;
 }
 
@@ -35,17 +36,17 @@
   padding:4px 10px;
   border-radius:20px;
   font-size:12px;
-  font-weight:600;
+  font-weight:normal;
 }
 
 .activo{
-  background:#d1fae5;
-  color:#065f46;
+  background:#008b64;
+  color:#ffffff;
 }
 
 .inactivo{
-  background:#fee2e2;
-  color:#991b1b;
+  background:#ff0000;
+  color:#ffffff;
 }
 
 .acciones{

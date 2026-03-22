@@ -29,12 +29,38 @@
   </div>
 
   <!-- RIGHT -->
-  <div class="topbar-right">
+<div class="topbar-right">
 
-    <div class="user">
-      {{ user?.nombres }} {{ user?.apellido_paterno }} {{ user?.apellido_materno }}
+  <!-- TIEMPO -->
+  <div class="session-timer" *ngIf="remainingSeconds > 0">
+    ⏳ {{ formatTime(remainingSeconds) }}
+  </div>
+
+  <!-- USUARIO DROPDOWN -->
+  <div class="user-dropdown" (click)="toggleDropdown($event)">
+
+    <div class="user-name">
+      {{ user?.idEmpleado?.nombres }}
+      {{ user?.idEmpleado?.apellidoPaterno }}
+      {{ user?.idEmpleado?.apellidoMaterno }}
+      ▼
+    </div>
+
+    <!-- MENU -->
+    <div class="dropdown-menu" *ngIf="dropdownOpen">
+
+      <div class="dropdown-item" (click)="irPerfil($event)">
+        👤 Perfil
+      </div>
+
+      <div class="dropdown-item logout" (click)="logout($event)">
+        🚪 Cerrar sesión
+      </div>
+
     </div>
 
   </div>
+
+</div>
 
 </nav>

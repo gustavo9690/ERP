@@ -2,42 +2,43 @@
 
 class Database
 {
-
     private static ?Database $instance = null;
-
     private PDO $connection;
 
     private function __construct()
     {
+        try {
+            $dsn = "mysql:host=" . Config::$dbHost .
+                   ";dbname=" . Config::$dbName .
+                   ";charset=" . Config::$dbCharset;
 
-        $this->connection = new PDO(
-            "mysql:host=localhost;dbname=gp_systems",
-            "root",
-            "root"
-        );
+            $this->connection = new PDO(
+                $dsn,
+                Config::$dbUser,
+                Config::$dbPassword,
+                [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false
+                ]
+            );
 
-        $this->connection->setAttribute(
-            PDO::ATTR_ERRMODE,
-            PDO::ERRMODE_EXCEPTION
-        );
-
+        } catch (PDOException $e) {
+            throw new Exception("Error de conexión DB: " . $e->getMessage());
+        }
     }
 
     public static function getInstance(): Database
     {
-
-        if (self::$instance === null)
-        {
+        if (self::$instance === null) {
             self::$instance = new Database();
         }
 
         return self::$instance;
-
     }
 
     public function getConnection(): PDO
     {
         return $this->connection;
     }
-
 }

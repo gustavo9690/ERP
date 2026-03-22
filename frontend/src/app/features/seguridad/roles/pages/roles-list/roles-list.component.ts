@@ -50,6 +50,7 @@ export class RolesListComponent implements OnInit {
       },
       complete: () => {
         console.log('Suscripción finalizada');
+        console.log('Roles obtenidos:', this.roles);
         this.loading = false;
         this.cdr.detectChanges();
       }

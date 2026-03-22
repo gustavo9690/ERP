@@ -32,7 +32,7 @@ export class LoginComponent {
   loginForm: FormGroup;
   hidePassword = true;
   loading = false;
-  errorMessage: string = '';
+  errorMessage = '';
 
   constructor(
     private fb: FormBuilder,
@@ -41,32 +41,35 @@ export class LoginComponent {
     private cdr: ChangeDetectorRef
   ) {
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
+      usuario: ['', Validators.required],
+      clave: ['', Validators.required]
     });
   }
 
-  onSubmit() {
-    if (this.loginForm.invalid) return;
+  onSubmit(): void {
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
+    }
 
     this.loading = true;
-    this.errorMessage = ''; // Limpiar mensaje de error anterior
+    this.errorMessage = '';
 
-    const { username, password } = this.loginForm.value;
+    const { usuario, clave } = this.loginForm.value;
 
-    this.authService.login(username, password)
-      .subscribe({
-        next: () => {
-          this.router.navigate(['/dashboard']);
-        },
-        error: (error) => {
-          this.loading = false;
-          this.errorMessage = error.message || 'Error de autenticación';
-          this.cdr.detectChanges();
-        },
-        complete: () => {
-          this.loading = false;
-        }
-      });
+    this.authService.login(usuario, clave).subscribe({
+      next: () => {
+        this.loading = false;
+        this.router.navigate(['/dashboard']);
+      },
+      error: (error) => {
+        this.loading = false;
+        this.errorMessage =
+          error?.error?.message ||   // 👈 MENSAJE DEL BACKEND
+          error?.message ||
+          'Error de autenticación';
+           this.cdr.detectChanges();
+      }
+    });
   }
 }

@@ -8,10 +8,9 @@ import { environment } from '../../../environments/environment';
 })
 export class AuthService {
 
-  private apiUrl = environment.apiUrl;
+  private apiUrl = environment.apiUrl + '/seguridad';
 
-  // 👇 Usuario reactivo
-  private userSubject = new BehaviorSubject<any>(this.getUserFromToken());
+  private userSubject = new BehaviorSubject<any>(this.getStoredUser());
   user$ = this.userSubject.asObservable();
 
   constructor(private http: HttpClient) {}
@@ -24,10 +23,15 @@ export class AuthService {
       tap(response => {
         if (response.success === true || response.status === 'success') {
           const token = response.data?.token || response.token;
+          const user = response.data;
+
           if (token) {
             localStorage.setItem('token', token);
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            this.userSubject.next(payload);
+          }
+
+          if (user) {
+            localStorage.setItem('user', JSON.stringify(user));
+            this.userSubject.next(user);
           }
         } else if (response.success === false || response.status === 'error') {
           const errorMessage = response.error || response.message || 'Credenciales incorrectas';
@@ -41,11 +45,23 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('token');
-    this.userSubject.next(null); // 👈 limpia usuario
+    localStorage.removeItem('user');
+    this.userSubject.next(null);
   }
 
   getToken(): string | null {
     return localStorage.getItem('token');
+  }
+
+  getStoredUser(): any {
+    const user = localStorage.getItem('user');
+    if (!user) return null;
+
+    try {
+      return JSON.parse(user);
+    } catch {
+      return null;
+    }
   }
 
   isAuthenticated(): boolean {
@@ -67,9 +83,33 @@ export class AuthService {
 
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.data;
+      return payload;
     } catch {
       return null;
     }
+  }
+
+  getTokenPayload(): any | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      return JSON.parse(atob(token.split('.')[1]));
+    } catch {
+      return null;
+    }
+  }
+
+  getTokenExpiration(): number | null {
+    const payload = this.getTokenPayload();
+    return payload?.exp ?? null;
+  }
+
+  getRemainingSeconds(): number {
+    const exp = this.getTokenExpiration();
+    if (!exp) return 0;
+
+    const now = Math.floor(Date.now() / 1000);
+    return Math.max(exp - now, 0);
   }
 }

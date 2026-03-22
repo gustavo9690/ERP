@@ -2,20 +2,13 @@
 
 class Controller
 {
-
-    protected function json($data): void
+    protected function success($data = null, string $message = 'OK', int $code = 200): void
     {
-        Response::json($data);
+        Response::success($data, $message, $code);
     }
 
-    protected function model(string $model)
+    protected function error(string $message = 'Error', int $code = 400, $data = null): void
     {
-        if (class_exists($model))
-        {
-            return new $model();
-        }
-
-        throw new Exception("Modelo no existe: " . $model);
+        Response::error($message, $code, $data);
     }
-
 }

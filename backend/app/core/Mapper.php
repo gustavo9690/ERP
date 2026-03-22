@@ -1,57 +1,75 @@
 <?php
+
 class Mapper
 {
+    /* =====================================================
+       MÉTODO PRINCIPAL
+    ===================================================== */
 
     public static function map($data, string $dtoClass)
     {
-
-        // 🔹 Si es lista
-        if (is_array($data) && isset($data[0])) {
-            return self::mapList($data, $dtoClass);
-        }
-
-        // 🔹 Si es un solo registro
-        return self::mapObject($data, $dtoClass);
-
-    }
-
-    private static function mapObject($data, string $dtoClass)
-    {
-
         if ($data === null) {
             return null;
         }
 
-        $dto = new $dtoClass();
+        // 🔹 Lista (array de registros)
+        if (is_array($data) && self::isList($data)) {
+            return self::mapList($data, $dtoClass);
+        }
 
-        // si viene entity
+        // 🔹 Objeto único
+        return self::mapObject($data, $dtoClass);
+    }
+
+    /* =====================================================
+       MAPEAR UN SOLO OBJETO
+    ===================================================== */
+
+    private static function mapObject($data, string $dtoClass)
+    {
+        if ($data === null) {
+            return null;
+        }
+
+        // Si es Entity → convertir a array
         if (is_object($data) && method_exists($data, 'toArray')) {
             $data = $data->toArray();
         }
 
+        $dto = new $dtoClass();
+
         foreach ($data as $key => $value) {
 
-            if (property_exists($dto, $key)) {
-                $dto->$key = $value;
+            if (!property_exists($dto, $key)) {
+                continue;
             }
 
+            // 🔥 Si es array (posible relación)
+            if (is_array($value)) {
+                $dto->$key = $value; // simple por ahora
+            } else {
+                $dto->$key = $value;
+            }
         }
 
         return $dto;
-
     }
 
-    public static function mapList(array $list, string $dtoClass): array
+    /* =====================================================
+       MAPEAR LISTA
+    ===================================================== */
+
+    private static function mapList(array $list, string $dtoClass): array
     {
-
-        $result = [];
-
-        foreach ($list as $row) {
-            $result[] = self::mapObject($row, $dtoClass);
-        }
-
-        return $result;
-
+        return array_map(fn($item) => self::mapObject($item, $dtoClass), $list);
     }
 
+    /* =====================================================
+       VALIDAR SI ES LISTA
+    ===================================================== */
+
+    private static function isList(array $array): bool
+    {
+        return array_keys($array) === range(0, count($array) - 1);
+    }
 }

@@ -2,52 +2,65 @@
 
 class Router
 {
-
     public function dispatch(): void
     {
-        
-        $url = $_GET['url'] ?? '';
-        $url = trim($url, '/');
+        try {
+            $url = $_GET['url'] ?? '';
+            $url = trim($url, '/');
+            $segments = $url !== '' ? explode('/', $url) : [];
 
-        $segments = explode('/', $url);
+            // MÓDULO
+            $module = !empty($segments[0]) ? strtolower($segments[0]) : Config::$defaultModule;
 
-        // MODULO
-        $module = !empty($segments[0]) ? strtolower($segments[0]) : Config::$defaultModule;
+            // SUBMÓDULO
+            $submodule = !empty($segments[1]) ? strtolower($segments[1]) : Config::$defaultSubmodule;
 
-        // CONTROLADOR
-        $controllerSegment = $segments[1] ?? Config::$defaultController;
-        $controllerName = ucfirst($controllerSegment)."Controller";
+            // CONTROLADOR
+            $controllerSegment = !empty($segments[2]) ? $segments[2] : Config::$defaultController;
+            $controllerName = $this->formatControllerName($controllerSegment);
 
-        // METODO
-        $method = $segments[2] ?? Config::$defaultMethod;
+            // MÉTODO
+            $method = !empty($segments[3]) ? $segments[3] : Config::$defaultMethod;
 
-        // PARAMETROS
-        $params = array_slice($segments, 3);
+            // PARÁMETROS
+            $params = array_slice($segments, 4);
 
-        // RUTA CONTROLADOR
-        $controllerFile = "app/modules/" . strtolower($module) . "/controllers/" . $controllerName . ".php";
+            // ARCHIVO CONTROLADOR
+            $controllerFile =
+                "app/modules/" .
+                $module . "/" .
+                $submodule .
+                "/controllers/" .
+                $controllerName . ".php";
 
-        if (!file_exists($controllerFile))
-        {
-            die("Archivo no existe: " . $controllerFile);
+            if (!file_exists($controllerFile)) {
+                Response::notFound("Controlador no encontrado: {$controllerName}");
+            }
+
+            require_once $controllerFile;
+
+            if (!class_exists($controllerName)) {
+                Response::serverError("Clase no encontrada: {$controllerName}");
+            }
+
+            $controller = new $controllerName();
+
+            if (!method_exists($controller, $method)) {
+                Response::notFound("Método no encontrado: {$method}");
+            }
+
+            call_user_func_array([$controller, $method], $params);
+
+        } catch (Throwable $e) {
+            Response::serverError($e->getMessage());
         }
-
-        require_once $controllerFile;
-
-        if (!class_exists($controllerName))
-        {
-            die("Clase no existe: " . $controllerName);
-        }
-
-        $controller = new $controllerName();
-
-        if (!method_exists($controller, $method))
-        {
-            die("Metodo no existe: " . $method);
-        }
-
-        call_user_func_array([$controller, $method], $params);
-
     }
 
+    private function formatControllerName(string $segment): string
+    {
+        $segment = str_replace(['-', '_'], ' ', strtolower($segment));
+        $segment = str_replace(' ', '', ucwords($segment));
+
+        return $segment . 'Controller';
+    }
 }

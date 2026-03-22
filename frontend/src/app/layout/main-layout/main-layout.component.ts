@@ -34,10 +34,12 @@ export class MainLayoutComponent {
   constructor(private authService: AuthService) {
     this.user$ = this.authService.user$; // aquí authService ya está inicializado
   }
-
+  
   isSidebarOpen = true;
 
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
+
+  
 }

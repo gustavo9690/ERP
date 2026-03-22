@@ -29,9 +29,12 @@
         <td>{{ rol.nombre }}</td>
         <td>{{ rol.descripcion }}</td>
         <td>  
-          <span 
-            class="estado activo">
+          <span class="estado activo" *ngIf="rol.estado">
             Activo
+          </span>
+
+          <span class="estado inactivo" *ngIf="!rol.estado">
+            Inactivo
           </span>
         </td>
         <td class="acciones">
