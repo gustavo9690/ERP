@@ -12,13 +12,14 @@ class JwtHelper
        GENERAR TOKEN
     ===================================================== */
 
-    public static function generate(array $data, int $expireSeconds = null ): string
+    public static function generate(array $data, int $expireSeconds = null , $type='access'): string
     {
         $expireSeconds = $expireSeconds ?? Config::$jwtExpire;
         $payload = [
             "iss"  => "gp_systems",
             "iat"  => time(),
             "exp"  => time() + $expireSeconds,
+            "type" => $type,
             "data" => $data
         ];
 

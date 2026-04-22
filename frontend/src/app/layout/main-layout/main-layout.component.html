@@ -18,3 +18,16 @@
   </div>
 
 </div>
+
+<app-confirm-modal
+  [visible]="showSessionPopup"
+  title="Sesión inactiva"
+  message="Has estado inactivo durante 5 minutos. Tu sesión se cerrará automáticamente si no respondes."
+  confirmText="Continuar sesión"
+  cancelText="Cerrar sesión"
+  [countdown]="sessionCountdown"
+  (confirm)="continuarSesion()"
+  (cancel)="cerrarSesion()"
+  (close)="cerrarPopup()">
+</app-confirm-modal>
+

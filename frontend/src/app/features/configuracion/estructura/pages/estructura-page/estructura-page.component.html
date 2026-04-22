@@ -1,0 +1,49 @@
+<!-- TABS TIPO TARJETAS -->
+<div class="card-tabs">
+
+  <button
+    type="button"
+    class="card-tab"
+    [class.active]="activeTab === 'modulos'"
+    (click)="changeTab('modulos')">
+
+    <div class="tab-icon">📦</div>
+
+    <div>
+      <span class="tab-title">Módulos</span>
+      <small>Gestión principal del sistema</small>
+    </div>
+
+  </button>
+
+  <button
+    type="button"
+    class="card-tab"
+    [class.active]="activeTab === 'submodulos'"
+    (click)="changeTab('submodulos')">
+
+    <div class="tab-icon">🧩</div>
+
+    <div>
+      <span class="tab-title">Submódulos</span>
+      <small>Estructura interna de módulos</small>
+    </div>
+
+  </button>
+
+  <button
+    type="button"
+    class="card-tab"
+    [class.active]="activeTab === 'opciones'"
+    (click)="changeTab('opciones')">
+
+    <div class="tab-icon">⚙️</div>
+
+    <div>
+      <span class="tab-title">Opciones</span>
+      <small>Acciones y rutas del sistema</small>
+    </div>
+
+  </button>
+
+</div>

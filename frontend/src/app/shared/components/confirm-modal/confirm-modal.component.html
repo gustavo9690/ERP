@@ -1,0 +1,34 @@
+<div class="modal-backdrop" *ngIf="visible">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ title }}</h2>
+    </div>
+
+    <div class="modal-body">
+        <!-- MENSAJE -->
+        <p *ngIf="message">{{ message }}</p>
+
+        <!-- COUNTDOWN -->
+        <div class="modal-countdown" *ngIf="countdown !== null && countdown !== undefined">
+            {{ formatTime(countdown) }}
+        </div>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-cancel"
+        *ngIf="showCancel"
+        (click)="onCancel()">
+        {{ cancelText }}
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-confirm"
+        (click)="onConfirm()">
+        {{ confirmText }}
+      </button>
+    </div>
+  </div>
+</div>

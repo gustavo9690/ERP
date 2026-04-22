@@ -28,5 +28,18 @@ export const MENU_CONFIG = [
         ]
       }
     ]
+  },
+
+  // 👇 NUEVO
+  {
+    key: 'configuracion',
+    label: 'Configuración',
+    items: [
+      {
+        label: 'Estructura',
+        route: '/configuracion/estructura'
+      }
+    ]
   }
+  
 ];

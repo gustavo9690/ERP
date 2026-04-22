@@ -36,4 +36,29 @@ class AuthController extends Controller
             $this->error($e->getMessage(), 400);
         }
     }
+
+    public function refresh(): void
+    {
+        try {
+            $input = $_POST;
+
+            if (empty($input)) {
+                $json = file_get_contents('php://input');
+                $input = json_decode($json, true) ?? [];
+            }
+
+            $refreshToken = $input['refreshToken'] ?? null;
+
+            if (!$refreshToken) {
+                throw new Exception('Refresh token requerido');
+            }
+
+            $result = $this->service->refresh($refreshToken);
+
+            $this->success($result, 'Token renovado');
+
+        } catch (Exception $e) {
+            $this->error($e->getMessage(), 400);
+        }
+    }
 }

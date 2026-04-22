@@ -24,19 +24,58 @@ class AuthService
             throw new Exception('Clave incorrecta');
         }
 
-        $payload = [
+        $tokenData = [
             'idUsuario' => $usuario->idUsuario,
             'usuario'   => $usuario->usuario,
-            'estado'    => $usuario->estado,
-            'iat'       => time()
+            'estado'    => $usuario->estado
         ];
 
-        $token = JwtHelper::generate($payload);
+
+        $accessToken = JwtHelper::generate($tokenData, 3600, 'access');
+        $refreshToken = JwtHelper::generate(
+            ['idUsuario' => $usuario->idUsuario],
+            60 * 60 * 24 * 7,
+            'refresh'
+        );
+
 
         $response = Mapper::map($usuario, LoginResponseDTO::class);
-        $response->token = $token;
+        $response->token = $accessToken;
+        $response->refreshToken = $refreshToken;
 
         return $response;
+    }
+
+    public function refresh(string $refreshToken): array
+    {
+        $decoded = JwtHelper::validate($refreshToken);
+
+        if (($decoded->type ?? '') !== 'refresh') {
+            throw new Exception('Refresh token inválido');
+        }
+
+        $data = $decoded->data ?? null;
+        $idUsuario = $data->idUsuario ?? null;
+
+        if (!$idUsuario) {
+            throw new Exception('Refresh token inválido');
+        }
+
+        $usuario = $this->usuarioRepository->findByIdUsuarioAndEstado((int)$idUsuario, 1);
+
+        if (!$usuario) {
+            throw new Exception('Usuario no encontrado o inactivo');
+        }
+
+        $newAccessToken = JwtHelper::generate([
+            'idUsuario' => $usuario->idUsuario,
+            'usuario'   => $usuario->usuario,
+            'estado'    => $usuario->estado
+        ], 3600, 'access');
+
+        return [
+            'token' => $newAccessToken
+        ];
     }
 
     public function me($authUser): array

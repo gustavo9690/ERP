@@ -7,6 +7,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { guestGuard } from './core/guards/guest.guard';
 import { RRHH_ROUTES } from './features/rrhh/rrhh.routes';
 import { SEGURIDAD_ROUTES } from './features/seguridad/seguridad.routes';
+import { CONFIGURACION_ROUTES } from './features/configuracion/configuracion.routes';
 
 
 
@@ -48,6 +49,11 @@ export const routes: Routes = [
         {
             path: 'seguridad',
             children: SEGURIDAD_ROUTES
+        },
+
+        {
+            path: 'configuracion',
+            children: CONFIGURACION_ROUTES
         }
 
         ]

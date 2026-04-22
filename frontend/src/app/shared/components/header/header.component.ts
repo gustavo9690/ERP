@@ -4,6 +4,7 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/ro
 import { MENU_CONFIG } from '../../../core/config/menu.config';
 import { filter } from 'rxjs/operators';
 import { AuthService } from '../../../core/services/auth.service';
+import { SessionService } from '../../../core/services/session.service';
 
 @Component({
   selector: 'app-header',
@@ -31,8 +32,11 @@ export class HeaderComponent {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private sessionService: SessionService
   ) {}
+
+  private isRefreshing = false;
 
   ngOnInit(): void {
     this.detectarModuloActivo();
@@ -48,7 +52,7 @@ export class HeaderComponent {
     this.sessionInterval = setInterval(() => {
       this.updateSessionTime();
     }, 1000);
-  }
+  } 
 
   ngOnDestroy(): void {
     if (this.sessionInterval) {
@@ -74,13 +78,25 @@ export class HeaderComponent {
     this.toggleSidebar.emit();
   }
 
+
+
   updateSessionTime(): void {
     this.remainingSeconds = this.authService.getRemainingSeconds();
 
-    if (this.remainingSeconds <= 0) {
-      this.authService.logout();
-    }
+    if (this.remainingSeconds <= 60 && !this.isRefreshing) {
+      this.isRefreshing = true;
 
+      this.authService.refreshToken().subscribe({
+        next: () => {
+          this.isRefreshing = false;
+          console.log('Token refrescado');
+        },
+        error: () => {
+          this.isRefreshing = false;
+          this.authService.logout();
+        }
+      });
+    }
     this.cdr.detectChanges();
   }
 
@@ -107,4 +123,6 @@ export class HeaderComponent {
     this.router.navigate(['/perfil']);
     this.dropdownOpen = false;
   }
+  
+
 }

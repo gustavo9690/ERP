@@ -302,6 +302,23 @@ abstract class Repository
         throw new Exception("Método {$method} no existe");
     }
 
+    public function findByEntity(string $entityClass, string $method, array $args = [])
+    {
+        if (strpos($method, 'findBy') !== 0) {
+            throw new Exception("Método inválido: {$method}");
+        }
+
+        $previousEntityClass = $this->entityClass;
+
+        $this->entityClass = $entityClass;
+
+        try {
+            return $this->handleDynamicFind($method, $args);
+        } finally {
+            $this->entityClass = $previousEntityClass;
+        }
+    }
+
     private function handleDynamicFind(string $method, array $args)
     {
         $conditionsPart = substr($method, 6);
@@ -443,7 +460,15 @@ abstract class Repository
 
         if (!empty($config['ref']['entity'])) {
             $entityClass = $config['ref']['entity'];
-            return new $entityClass($data);
+
+            $previousEntityClass = $this->entityClass;
+            $this->entityClass = $entityClass;
+
+            try {
+                return $this->mapResult($data);
+            } finally {
+                $this->entityClass = $previousEntityClass;
+            }
         }
 
         return $data;

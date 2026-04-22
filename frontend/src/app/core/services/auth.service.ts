@@ -22,11 +22,16 @@ export class AuthService {
     }).pipe(
       tap(response => {
         if (response.success === true || response.status === 'success') {
-          const token = response.data?.token || response.token;
+          const token = response.data?.token;
+          const refreshToken = response.data?.refreshToken;
           const user = response.data;
 
           if (token) {
             localStorage.setItem('token', token);
+          }
+
+          if (refreshToken) {
+            localStorage.setItem('refreshToken', refreshToken);
           }
 
           if (user) {
@@ -43,14 +48,42 @@ export class AuthService {
     );
   }
 
+  refreshToken() {
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    return this.http.post<any>(`${this.apiUrl}/auth/auth/refresh`, {
+      refreshToken
+    }).pipe(
+      tap(response => {
+        if (response.success === true || response.status === 'success') {
+          const newToken = response.data?.token;
+          const newRefreshToken = response.data?.refreshToken;
+
+          if (newToken) {
+            localStorage.setItem('token', newToken);
+          }
+
+          if (newRefreshToken) {
+            localStorage.setItem('refreshToken', newRefreshToken);
+          }
+        }
+      })
+    );
+  }
+
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
     this.userSubject.next(null);
   }
 
   getToken(): string | null {
     return localStorage.getItem('token');
+  }
+
+  getRefreshToken(): string | null {
+    return localStorage.getItem('refreshToken');
   }
 
   getStoredUser(): any {
@@ -70,8 +103,11 @@ export class AuthService {
 
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
-      const now = Math.floor(Date.now() / 1000);
-      return payload.exp > now;
+      const exp = payload.exp;
+
+      if (!exp) return false;
+
+      return Date.now() < exp * 1000;
     } catch {
       return false;
     }
@@ -82,8 +118,7 @@ export class AuthService {
     if (!token) return null;
 
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload;
+      return JSON.parse(atob(token.split('.')[1]));
     } catch {
       return null;
     }

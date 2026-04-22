@@ -6,6 +6,7 @@ class LoginResponseDTO
     public string $usuario;
     public int $estado;
     public string $token;
+    public ?string $refreshToken = null;
     public $idEmpleado; // puede ser int o array si embed
 
     public function __construct(array $data = [])
@@ -14,6 +15,7 @@ class LoginResponseDTO
         $this->usuario    = $data['usuario'] ?? '';
         $this->estado     = $data['estado'] ?? 0;
         $this->token      = $data['token'] ?? '';
+        $this->refreshToken = $data['refreshToken'] ?? null;
         $this->idEmpleado = $data['idEmpleado'] ?? null;
     }
 
@@ -24,6 +26,7 @@ class LoginResponseDTO
             'usuario'    => $this->usuario,
             'estado'     => $this->estado,
             'token'      => $this->token,
+            'refreshToken' => $this->refreshToken,
             'idEmpleado' => $this->idEmpleado
         ];
     }
