@@ -1,4 +1,4 @@
-<div class="sidebar">
+<aside class="sidebar" [class.collapsed]="collapsed">
 
   <ul class="menu" *ngIf="moduloActivo">
 
@@ -7,34 +7,48 @@
       <!-- ITEM CON SUBMENÚ -->
       <div *ngIf="item.children; else simpleItem">
 
-        <button 
+        <button
           type="button"
           class="menu-button"
-          (click)="toggleMenu(item.label)">
+          [class.open]="isOpen(item.label)"
+          (click)="toggleMenu(item.label)"
+          [title]="collapsed ? item.label : ''">
 
-          {{ item.label }}
+          <span class="menu-text">
 
-          <span class="arrow" [class.open]="isOpen(item.label)">
+            <span class="menu-icon">
+              <img
+                [src]="'assets/icons/' + item.icon + '.svg'"
+                [alt]="item.label">
+            </span>
+
+            <span class="menu-label" *ngIf="!collapsed">
+              {{ item.label }}
+            </span>
+
+          </span>
+
+          <span
+            class="arrow"
+            *ngIf="!collapsed"
+            [class.open]="isOpen(item.label)">
             ▾
           </span>
 
         </button>
 
-        <ul class="submenu" *ngIf="isOpen(item.label)">
-
+        <ul class="submenu" *ngIf="isOpen(item.label) && !collapsed">
           <li *ngFor="let sub of item.children">
-
             <a
               [routerLink]="sub.route"
               routerLinkActive="active"
               [routerLinkActiveOptions]="{ exact: true }">
 
+              <span class="submenu-dot"></span>
               {{ sub.label }}
 
             </a>
-
           </li>
-
         </ul>
 
       </div>
@@ -46,9 +60,22 @@
           class="menu-link"
           [routerLink]="item.route"
           routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }">
+          [routerLinkActiveOptions]="{ exact: true }"
+          [title]="collapsed ? item.label : ''">
 
-          {{ item.label }}
+          <span class="menu-text">
+
+            <span class="menu-icon">
+              <img
+                [src]="'assets/icons/' + item.icon + '.svg'"
+                [alt]="item.label">
+            </span>
+
+            <span class="menu-label" *ngIf="!collapsed">
+              {{ item.label }}
+            </span>
+
+          </span>
 
         </a>
 
@@ -58,4 +85,4 @@
 
   </ul>
 
-</div>
+</aside>

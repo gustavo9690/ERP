@@ -11,8 +11,7 @@ import { SessionService } from '../../../core/services/session.service';
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink,
-    RouterLinkActive
+    RouterLink
   ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']

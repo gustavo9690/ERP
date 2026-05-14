@@ -1,58 +1,79 @@
-.login-wrapper {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .login-card {
   width: 100%;
-  max-width: 400px;
-  padding: 30px;
-  border-radius: 12px;
-  border: 1px solid;
-  border-color: #e0e0e0;
-  box-shadow: 0px 10px 20px 20px rgba(0, 0, 0, 0.1);
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 36px 32px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
 }
 
-.full-width {
-  width: 100%;
-  margin-bottom: 15px;
+.logo {
+  width: 220px;
+  height: auto;
+  display: block;
+  margin: 0 auto 18px;
 }
 
-.error-message {
-  color: #ffffff;
+.titulo-login {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 28px;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.input-group-text {
+  background: #f8fafc;
+  color: #64748b;
+}
+
+.form-control {
+  min-height: 46px;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #86b7fe;
+}
+
+.input-group:focus-within .input-group-text {
+  border-color: #86b7fe;
+}
+
+.btn-outline-secondary {
+  border-color: #dee2e6;
+}
+
+.invalid-text {
+  color: #dc3545;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.alert {
   font-size: 14px;
-  margin-bottom: 15px;
-  text-align: center;
-  padding: 8px;
-  background-color: #ff1100;
-  border-radius: 4px;
-  border: 1px solid #ff1100;
-}
-
-.titulo_login {
-  text-align: center;
-  margin-bottom: 20px;
+  border-radius: 10px;
 }
 
 .login-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #144AA7 !important;
-  color: white !important;
-} 
-
-/* Force spinner stroke to white inside the login button */
-/* Force spinner color to white (primary method) */
-.white-spinner {
-  color: #ffffff !important;
+  height: 48px;
+  border-radius: 12px;
+  font-weight: 600;
+  background: #2563eb;
+  border: none;
 }
 
-/* Fallbacks: target the generated SVG circle and common material classes */
-::ng-deep .white-spinner svg circle,
-::ng-deep .white-spinner .mat-progress-spinner circle,
-::ng-deep .white-spinner .mat-progress-spinner .mat-progress-spinner-circle {
-  stroke: #ffffff !important;
+.login-button:hover {
+  background: #1d4ed8;
+}
+
+.login-button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
 }

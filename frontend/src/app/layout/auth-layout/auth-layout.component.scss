@@ -1,13 +1,60 @@
-.auth-container {
-  height: 100vh;
+.layout-auth{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #eef1f5;
+}
+
+/* HEADER */
+.header-auth{
+  background-color: #144aa7;
+  padding: 10px 0;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* CONTENIDO */
+.auth-container{
+  flex: 1; /* IMPORTANTE */
+
   display: flex;
   justify-content: center;
   align-items: center;
- 
+
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+
+  background-image: url('/assets/images/login/fondo_login.jpeg');
+  background-size: cover;
+  background-position: center;
 }
 
-.auth-content {
+/* CONTENIDO INTERNO */
+.auth-content{
   width: 100%;
-  max-width: 400px;
-  padding: 30px;
+  max-width: 500px;
+}
+
+/* FOOTER */
+.footer-auth{
+  background-color: #333;
+  color: #fff;
+  padding: 15px 0;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  box-sizing: border-box;
+}
+
+/* TEXTO FOOTER */
+.footer-content{
+  text-align: center;
+  font-size: 14px;
 }

@@ -1,0 +1,140 @@
+<div class="table-card">
+
+  <!-- HEADER -->
+  <div class="table-header">
+
+    <div class="table-titles">
+
+      <h3>{{ title }}</h3>
+
+      <p *ngIf="subtitle">
+        {{ subtitle }}
+      </p>
+
+    </div>
+
+    <div class="table-actions">
+
+      <ng-content select="[table-actions]"></ng-content>
+
+    </div>
+
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="table-toolbar">
+
+    <div class="table-search">
+
+      <input
+        type="text"
+        placeholder="Buscar...">
+
+    </div>
+
+    <div class="table-toolbar-actions">
+
+      <ng-content select="[table-toolbar-actions]"></ng-content>
+
+    </div>
+
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrapper">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>Nombre</th>
+          <th>Cargo</th>
+          <th>Estado</th>
+          <th class="actions-column"></th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        <tr>
+
+          <td>Juan Pérez</td>
+          <td>Frontend Developer</td>
+
+          <td>
+            <span class="status active">
+              Activo
+            </span>
+          </td>
+
+          <td class="actions-column">
+
+            <button class="action-btn">
+              ⋮
+            </button>
+
+          </td>
+
+        </tr>
+
+        <tr>
+
+          <td>María López</td>
+          <td>RRHH</td>
+
+          <td>
+            <span class="status inactive">
+              Inactivo
+            </span>
+          </td>
+
+          <td class="actions-column">
+
+            <button class="action-btn">
+              ⋮
+            </button>
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="table-footer">
+
+    <span>
+      Mostrando 1-10 de 120 registros
+    </span>
+
+    <div class="pagination">
+
+      <button>
+        ←
+      </button>
+
+      <button class="active">
+        1
+      </button>
+
+      <button>
+        2
+      </button>
+
+      <button>
+        →
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

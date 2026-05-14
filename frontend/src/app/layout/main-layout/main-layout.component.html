@@ -1,21 +1,53 @@
-<app-header 
+<app-header
   [user]="user$ | async"
   (toggleSidebar)="toggleSidebar()">
 </app-header>
 
 <div class="layout">
 
-  <app-sidebar *ngIf="isSidebarOpen"></app-sidebar>
+  <aside
+    class="sidebar-wrapper"
+    [class.collapsed]="!isSidebarOpen">
 
-  <div class="content">
+    <app-sidebar
+      [collapsed]="!isSidebarOpen">
+    </app-sidebar>
 
-    <app-breadcrumb></app-breadcrumb>
+  </aside>
 
-    <div class="page-content">
-      <router-outlet></router-outlet>
+  <main class="content">
+
+    <div class="content-header">
+      <app-breadcrumb></app-breadcrumb>
     </div>
 
-  </div>
+    <div class="page-wrapper">
+
+      <div class="page-content">
+        <router-outlet></router-outlet>
+      </div>
+
+      <footer class="footer">
+        <div class="footer-left">
+          <span class="footer-brand">
+            GP Systems ERP
+          </span>
+          <span class="footer-divider"></span>
+          <span>
+            © 2026
+          </span>
+        </div>
+        <div class="footer-right">
+          <span class="footer-divider"></span>
+          <span>
+            v1.0.0
+          </span>
+        </div>
+      </footer>
+
+    </div>
+
+  </main>
 
 </div>
 
@@ -30,4 +62,3 @@
   (cancel)="cerrarSesion()"
   (close)="cerrarPopup()">
 </app-confirm-modal>
-

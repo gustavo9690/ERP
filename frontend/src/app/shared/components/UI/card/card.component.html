@@ -1,0 +1,29 @@
+<div class="app-card">
+
+  <div
+    class="card-header"
+    *ngIf="title || subtitle">
+
+    <div class="card-titles">
+
+      <h3 *ngIf="title">
+        {{ title }}
+      </h3>
+
+      <p *ngIf="subtitle">
+        {{ subtitle }}
+      </p>
+
+    </div>
+
+    <div class="card-actions">
+      <ng-content select="[card-actions]"></ng-content>
+    </div>
+
+  </div>
+
+  <div class="card-body">
+    <ng-content></ng-content>
+  </div>
+
+</div>

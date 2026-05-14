@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MENU_CONFIG } from '../../../core/config/menu.config';
 import { filter } from 'rxjs/internal/operators/filter';
@@ -19,6 +19,7 @@ import { filter } from 'rxjs/internal/operators/filter';
 export class SidebarComponent {
 
   menu = MENU_CONFIG;
+  @Input() collapsed: boolean = false;
   moduloActivo: any;
   openMenus: Set<string> = new Set();
 

@@ -1,66 +1,80 @@
 <div class="login-wrapper">
-  <mat-card class="login-card">
+  <div class="login-card">
+
     <img src="assets/images/logo.png" class="logo" alt="Logo del sistema">
-    <h2 class="titulo_login">Iniciar Sesión</h2>
+
+    <h2 class="titulo-login">Iniciar Sesión</h2>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Usuario</mat-label>
-        <input
-          matInput
-          formControlName="usuario"
-          autocomplete="username">
-        <mat-icon matSuffix>person</mat-icon>
+      <!-- Usuario -->
+      <div class="mb-3">
+        <label class="form-label">Usuario</label>
 
-        <mat-error *ngIf="loginForm.get('usuario')?.hasError('required') && loginForm.get('usuario')?.touched">
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="usuario"
+            autocomplete="username"
+            placeholder="Ingrese su usuario"
+            [class.is-invalid]="loginForm.get('usuario')?.hasError('required') && loginForm.get('usuario')?.touched">
+        </div>
+
+        <div
+          class="invalid-text"
+          *ngIf="loginForm.get('usuario')?.hasError('required') && loginForm.get('usuario')?.touched">
           El usuario es obligatorio
-        </mat-error>
-      </mat-form-field>
+        </div>
+      </div>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Contraseña</mat-label>
-        <input
-          matInput
-          [type]="hidePassword ? 'password' : 'text'"
-          formControlName="clave"
-          autocomplete="current-password">
+      <!-- Contraseña -->
+      <div class="mb-3">
+        <label class="form-label">Contraseña</label>
 
-        <button
-          mat-icon-button
-          matSuffix
-          type="button"
-          (click)="hidePassword = !hidePassword"
-          [attr.aria-label]="hidePassword ? 'Mostrar contraseña' : 'Ocultar contraseña'">
-          <mat-icon>
-            {{ hidePassword ? 'visibility_off' : 'visibility' }}
-          </mat-icon>
-        </button>
+        <div class="input-group">
+          <input
+            [type]="hidePassword ? 'password' : 'text'"
+            class="form-control"
+            formControlName="clave"
+            autocomplete="current-password"
+            placeholder="Ingrese su contraseña"
+            [class.is-invalid]="loginForm.get('clave')?.hasError('required') && loginForm.get('clave')?.touched">
 
-        <mat-error *ngIf="loginForm.get('clave')?.hasError('required') && loginForm.get('clave')?.touched">
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            (click)="hidePassword = !hidePassword">
+            <i class="bi" [ngClass]="hidePassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+          </button>
+        </div>
+
+        <div
+          class="invalid-text"
+          *ngIf="loginForm.get('clave')?.hasError('required') && loginForm.get('clave')?.touched">
           La contraseña es obligatoria
-        </mat-error>
-      </mat-form-field>
+        </div>
+      </div>
 
-      <div *ngIf="errorMessage" class="error-message">
+      <!-- Error -->
+      <div *ngIf="errorMessage" class="alert alert-danger py-2">
         {{ errorMessage }}
       </div>
 
+      <!-- Botón -->
       <button
-        mat-raised-button
-        color="accent"
-        class="full-width login-button"
+        class="btn btn-primary w-100 login-button"
         type="submit"
         [disabled]="loading || loginForm.invalid">
 
-        <mat-spinner
-          class="white-spinner"
+        <span
           *ngIf="loading"
-          diameter="20">
-        </mat-spinner>
+          class="spinner-border spinner-border-sm me-2">
+        </span>
 
-        <span *ngIf="!loading">Ingresar</span>
+        {{ loading ? 'Ingresando...' : 'Ingresar' }}
       </button>
+
     </form>
-  </mat-card>
+  </div>
 </div>

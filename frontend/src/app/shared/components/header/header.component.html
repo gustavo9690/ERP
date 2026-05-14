@@ -1,66 +1,53 @@
-<nav class="topbar">
+<header class="app-header">
 
-  <!-- LEFT -->
-  <div class="topbar-left">
-
-    <button class="menu-btn" (click)="toggleMenu()">
+  <div class="header-left">
+    <button class="menu-btn" type="button" (click)="toggleMenu()">
       ☰
     </button>
 
-    <div class="logo">
+    <div class="brand">
       <img src="assets/images/logo.png" alt="GP Systems">
     </div>
 
+    <nav class="module-nav">
+      <a
+        *ngFor="let item of menu"
+        [routerLink]="['/', item.key]"
+        [class.active]="esActivo(item.key)">
+        {{ item.label }}
+      </a>
+    </nav>
   </div>
 
-  <!-- CENTER -->
-  <div class="topbar-center">
+  <div class="header-right">
 
-    <a 
-      *ngFor="let modulo of menu"
-      [routerLink]="'/' + modulo.key"
-      routerLinkActive="active"
-      class="top-link">
-
-      {{ modulo.label }}
-
-    </a>
-
-  </div>
-
-  <!-- RIGHT -->
-<div class="topbar-right">
-
-  <!-- TIEMPO -->
-  <div class="session-timer" *ngIf="remainingSeconds > 0">
-    ⏳ {{ formatTime(remainingSeconds) }}
-  </div>
-
-  <!-- USUARIO DROPDOWN -->
-  <div class="user-dropdown" (click)="toggleDropdown($event)">
-
-    <div class="user-name">
-      {{ user?.idEmpleado?.nombres }}
-      {{ user?.idEmpleado?.apellidoPaterno }}
-      {{ user?.idEmpleado?.apellidoMaterno }}
-      ▼
+    <div class="session-time">
+      <span>⏳</span>
+      <strong>{{ formatTime(remainingSeconds) }}</strong>
     </div>
 
-    <!-- MENU -->
-    <div class="dropdown-menu" *ngIf="dropdownOpen">
-
-      <div class="dropdown-item" (click)="irPerfil($event)">
-        👤 Perfil
+    <div class="user-menu" (click)="toggleDropdown($event)">
+      <div class="avatar">
+        {{ user?.idEmpleado.nombres?.charAt(0)+ user?.idEmpleado.apellidoPaterno.charAt(0) || user?.usuario?.charAt(0) || 'U' }}
       </div>
 
-      <div class="dropdown-item logout" (click)="logout($event)">
-        🚪 Cerrar sesión
-      </div>
+      <span class="user-name">
+        {{ user?.idEmpleado.nombres + ' ' + user?.idEmpleado.apellidoPaterno + ' ' + user?.idEmpleado.apellidoMaterno || user?.usuario || 'Usuario' }}
+      </span>
 
+      <span class="chevron">▾</span>
+
+      <div class="dropdown" *ngIf="dropdownOpen">
+        <button type="button" (click)="irPerfil($event)">
+          Mi perfil
+        </button>
+
+        <button type="button" class="logout" (click)="logout($event)">
+          Cerrar sesión
+        </button>
+      </div>
     </div>
 
   </div>
 
-</div>
-
-</nav>
+</header>
