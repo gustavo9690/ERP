@@ -8,7 +8,7 @@
   },
   "include": [
     "src/**/*.ts"
-  ],
+, "src/app/shared/components/UI/tabs/tabs.componet,ts"  ],
   "exclude": [
     "src/**/*.spec.ts"
   ]

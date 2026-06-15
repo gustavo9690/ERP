@@ -122,6 +122,17 @@ export class HeaderComponent {
     this.router.navigate(['/perfil']);
     this.dropdownOpen = false;
   }
+
+  getUserInitial(): string {
+    console.log('Usuario:', this.user);
+    const name = this.user?.idEmpleado.nombres || 'U';
+    const apellido = this.user?.idEmpleado.apellidoPaterno || '';
+    return name.charAt(0).toUpperCase() + (apellido.charAt(0).toUpperCase() || ''); 
+  }
+
+  getUserName(): string {
+    return this.user?.idEmpleado.nombres+' '+this.user?.idEmpleado.apellidoPaterno+' '+this.user?.idEmpleado.apellidoMaterno || 'Usuario';
+  }
   
 
 }

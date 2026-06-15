@@ -1,26 +1,19 @@
 <nav class="breadcrumb" aria-label="breadcrumb">
-
   <a routerLink="/dashboard" class="breadcrumb-home">
     Inicio
   </a>
-
   <ng-container *ngFor="let item of breadcrumbs; let last = last">
-
     <span class="breadcrumb-separator">/</span>
-
     <a
       *ngIf="!last"
       [routerLink]="item.url"
       class="breadcrumb-link">
       {{ item.label }}
     </a>
-
     <span
       *ngIf="last"
       class="breadcrumb-current">
       {{ item.label }}
     </span>
-
   </ng-container>
-
 </nav>

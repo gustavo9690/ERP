@@ -2,31 +2,22 @@
   [user]="user$ | async"
   (toggleSidebar)="toggleSidebar()">
 </app-header>
-
 <div class="layout">
-
   <aside
     class="sidebar-wrapper"
     [class.collapsed]="!isSidebarOpen">
-
     <app-sidebar
       [collapsed]="!isSidebarOpen">
     </app-sidebar>
-
   </aside>
-
   <main class="content">
-
     <div class="content-header">
       <app-breadcrumb></app-breadcrumb>
     </div>
-
     <div class="page-wrapper">
-
       <div class="page-content">
         <router-outlet></router-outlet>
       </div>
-
       <footer class="footer">
         <div class="footer-left">
           <span class="footer-brand">
@@ -44,11 +35,8 @@
           </span>
         </div>
       </footer>
-
     </div>
-
   </main>
-
 </div>
 
 <app-confirm-modal

@@ -28,11 +28,11 @@
 
     <div class="user-menu" (click)="toggleDropdown($event)">
       <div class="avatar">
-        {{ user?.idEmpleado.nombres?.charAt(0)+ user?.idEmpleado.apellidoPaterno.charAt(0) || user?.usuario?.charAt(0) || 'U' }}
+        {{ getUserInitial() }}
       </div>
 
       <span class="user-name">
-        {{ user?.idEmpleado.nombres + ' ' + user?.idEmpleado.apellidoPaterno + ' ' + user?.idEmpleado.apellidoMaterno || user?.usuario || 'Usuario' }}
+        {{ getUserName() }}
       </span>
 
       <span class="chevron">▾</span>

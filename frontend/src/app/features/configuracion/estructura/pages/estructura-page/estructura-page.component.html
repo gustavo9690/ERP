@@ -1,0 +1,17 @@
+
+  <app-page-header
+    title="Estructura del sistema"
+    subtitle="Administra módulos, submódulos y opciones"
+    [tabs]="tabs"
+    [activeTab]="tab"
+    (tabChange)="changeTab($event)"
+    >
+  </app-page-header>
+  <div class="estructura-content">
+    <app-modulos *ngIf="tab === 'modulos'">
+    </app-modulos>
+    <app-submodulos *ngIf="tab === 'submodulos'">
+    </app-submodulos>
+    <app-opciones *ngIf="tab === 'opciones'">
+    </app-opciones>
+  </div>

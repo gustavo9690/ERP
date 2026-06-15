@@ -1,0 +1,9 @@
+<div class="segment-tabs">
+  <button
+    *ngFor="let item of tabs"
+    type="button"
+    [class.active]="activeTab === item.key"
+    (click)="selectTab(item.key)">
+    {{ item.label }}
+  </button>
+</div>

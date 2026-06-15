@@ -1,58 +1,134 @@
-<div class="table-card">
+<div class="data-table">
 
   <!-- HEADER -->
-  <div class="table-header">
+  <div class="dt-header">
 
-    <div class="table-titles">
-
+    <div class="dt-title">
       <h3>{{ title }}</h3>
-
-      <p *ngIf="subtitle">
-        {{ subtitle }}
-      </p>
-
+      <p *ngIf="subtitle">{{ subtitle }}</p>
     </div>
 
-    <div class="table-actions">
-
+    <div class="dt-header-actions">
       <ng-content select="[table-actions]"></ng-content>
-
     </div>
 
   </div>
 
   <!-- TOOLBAR -->
-  <div class="table-toolbar">
+  <div class="dt-toolbar">
 
-    <div class="table-search">
+    <div class="dt-toolbar-left">
 
-      <input
-        type="text"
-        placeholder="Buscar...">
+      <div class="dt-search" *ngIf="searchable">
+
+        <span class="dt-search-icon">⌕</span>
+
+        <input
+          type="text"
+          placeholder="Buscar..."
+          [(ngModel)]="searchText"
+          (ngModelChange)="onSearchChange()">
+
+        <button
+          *ngIf="searchText"
+          type="button"
+          class="dt-clear"
+          (click)="clearSearch()">
+          ×
+        </button>
+
+      </div>
+
+      <button
+        *ngIf="filterable"
+        type="button"
+        class="dt-tool-btn">
+        Filtros
+      </button>
+
+      <button
+        *ngIf="exportable"
+        type="button"
+        class="dt-tool-btn"
+        (click)="export.emit()">
+        Exportar
+      </button>
 
     </div>
 
-    <div class="table-toolbar-actions">
+    <div class="dt-toolbar-right">
 
-      <ng-content select="[table-toolbar-actions]"></ng-content>
+      <span class="dt-selected" *ngIf="selectable && selectedRows.size > 0">
+        {{ selectedRows.size }} seleccionado(s)
+      </span>
+
+      <label class="dt-page-size" *ngIf="paginated">
+        Mostrar
+
+        <select
+          [(ngModel)]="pageSize"
+          (ngModelChange)="changePageSize()">
+
+          <option
+            *ngFor="let size of pageSizeOptions"
+            [ngValue]="size">
+            {{ size }}
+          </option>
+
+        </select>
+      </label>
 
     </div>
 
   </div>
 
   <!-- TABLE -->
-  <div class="table-wrapper">
+  <div class="dt-table-wrapper">
 
-    <table>
+    <table class="dt-table">
 
       <thead>
 
         <tr>
 
-          <th>Nombre</th>
-          <th>Cargo</th>
-          <th>Estado</th>
-          <th class="actions-column"></th>
+          <th *ngIf="selectable" class="dt-select-col">
+            <input
+              type="checkbox"
+              [checked]="allVisibleSelected"
+              (change)="toggleAllVisible()">
+          </th>
+
+          <th
+            *ngFor="let column of columns"
+            [style.width]="column.width || null"
+            [class.sortable]="column.sortable !== false"
+            (click)="sortBy(column)">
+
+            <div class="dt-th-content">
+
+              <span>{{ column.label }}</span>
+
+              <span
+                class="dt-sort-icon"
+                *ngIf="column.sortable !== false">
+
+                <ng-container *ngIf="sortColumn === column.key; else unsorted">
+                  {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                </ng-container>
+
+                <ng-template #unsorted>
+                  ↕
+                </ng-template>
+
+              </span>
+
+            </div>
+
+          </th>
+
+          <th *ngIf="showActions" class="dt-actions-col">
+            Acciones
+          </th>
 
         </tr>
 
@@ -60,46 +136,115 @@
 
       <tbody>
 
-        <tr>
+        <!-- LOADING -->
+        <tr *ngIf="loading">
+          <td
+            class="dt-empty"
+            [attr.colspan]="columns.length + (selectable ? 1 : 0) + (showActions ? 1 : 0)">
 
-          <td>Juan Pérez</td>
-          <td>Frontend Developer</td>
-
-          <td>
-            <span class="status active">
-              Activo
-            </span>
-          </td>
-
-          <td class="actions-column">
-
-            <button class="action-btn">
-              ⋮
-            </button>
+            <div class="dt-empty-state">
+              <div class="dt-empty-icon">⏳</div>
+              <strong>Cargando registros</strong>
+              <span>Espera un momento...</span>
+            </div>
 
           </td>
+        </tr>
+
+        <!-- DATA -->
+        <tr
+          *ngFor="let row of pagedData; trackBy: trackByRow"
+          [class.selected]="isSelected(row)">
+
+          <ng-container *ngIf="!loading">
+
+            <td *ngIf="selectable" class="dt-select-col">
+              <input
+                type="checkbox"
+                [checked]="isSelected(row)"
+                (change)="toggleRow(row)">
+            </td>
+
+            <td *ngFor="let column of columns">
+
+              <ng-container [ngSwitch]="column.type">
+
+                <span
+                  *ngSwitchCase="'status'"
+                  class="dt-status"
+                  [class.active]="row[column.key]"
+                  [class.inactive]="!row[column.key]">
+
+                  <span class="dt-status-dot"></span>
+                  {{ row[column.key] ? 'Activo' : 'Inactivo' }}
+
+                </span>
+
+                <span
+                  *ngSwitchCase="'number'"
+                  class="dt-number">
+                  {{ row[column.key] }}
+                </span>
+
+                <span *ngSwitchDefault>
+                  {{ row[column.key] }}
+                </span>
+
+              </ng-container>
+
+            </td>
+
+            <td *ngIf="showActions" class="dt-actions-col">
+
+              <div class="dt-row-actions">
+
+                <ng-container *ngFor="let action of actions">
+
+                  <button
+                    *ngIf="isActionVisible(action, row)"
+                    type="button"
+                    class="dt-action"
+                    [class.primary]="action.type === 'primary'"
+                    [class.danger]="action.type === 'danger'"
+                    [class.success]="action.type === 'success'"
+                    [class.warning]="action.type === 'warning'"
+                    [disabled]="isActionDisabled(action, row)"
+                    [title]="action.label"
+                    (click)="onAction(action, row)">
+
+                    <span *ngIf="action.icon" class="dt-action-icon">
+                      {{ action.icon }}
+                    </span>
+
+                    <span>
+                      {{ action.label }}
+                    </span>
+
+                  </button>
+
+                </ng-container>
+
+              </div>
+
+            </td>
+
+          </ng-container>
 
         </tr>
 
-        <tr>
+        <!-- EMPTY -->
+        <tr *ngIf="!loading && pagedData.length === 0">
+          <td
+            class="dt-empty"
+            [attr.colspan]="columns.length + (selectable ? 1 : 0) + (showActions ? 1 : 0)">
 
-          <td>María López</td>
-          <td>RRHH</td>
-
-          <td>
-            <span class="status inactive">
-              Inactivo
-            </span>
-          </td>
-
-          <td class="actions-column">
-
-            <button class="action-btn">
-              ⋮
-            </button>
+            <div class="dt-empty-state">
+              <div class="dt-empty-icon">⌕</div>
+              <strong>No hay registros</strong>
+              <span>No se encontraron datos para mostrar.</span>
+            </div>
 
           </td>
-
         </tr>
 
       </tbody>
@@ -109,28 +254,34 @@
   </div>
 
   <!-- FOOTER -->
-  <div class="table-footer">
+  <div class="dt-footer" *ngIf="paginated">
 
-    <span>
-      Mostrando 1-10 de 120 registros
-    </span>
+    <div class="dt-info">
+      Mostrando {{ startItem }} - {{ endItem }} de {{ sortedData.length }} registros
+    </div>
 
-    <div class="pagination">
+    <div class="dt-pagination">
 
-      <button>
-        ←
+      <button
+        type="button"
+        [disabled]="currentPage === 1"
+        (click)="goToPage(currentPage - 1)">
+        Anterior
       </button>
 
-      <button class="active">
-        1
+      <button
+        type="button"
+        *ngFor="let page of [].constructor(totalPages); let i = index"
+        [class.active]="currentPage === i + 1"
+        (click)="goToPage(i + 1)">
+        {{ i + 1 }}
       </button>
 
-      <button>
-        2
-      </button>
-
-      <button>
-        →
+      <button
+        type="button"
+        [disabled]="currentPage === totalPages"
+        (click)="goToPage(currentPage + 1)">
+        Siguiente
       </button>
 
     </div>

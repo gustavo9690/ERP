@@ -32,34 +32,10 @@ export class DashboardComponent {
   loading = false;
   error?: string;
 
-  constructor(private rolesService: RolesService,private router: Router) {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     console.log('Ruta actual:', this.router.url);
-    this.cargarRoles();
-  }
-
-  cargarRoles() {
-    this.loading = true;
-    this.error = undefined;
-
-    this.rolesService.obtenerRoles().subscribe({
-      next: res => {
-        this.roles = res.data.roles;
-        this.loading = false;
-      },
-      error: err => {
-        console.error('Error cargando roles:', err);
-        this.error = 'No se pudo cargar la lista de roles. Intenta de nuevo.';
-        this.loading = false;
-      }
-    }); 
-  }
-
-  eliminar(id: number) {
-    this.rolesService.eliminarRol(id).subscribe(() => {
-      this.cargarRoles();
-    });
   }
 
 

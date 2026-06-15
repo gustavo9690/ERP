@@ -1,21 +1,22 @@
 <div class="page-header">
-
   <div class="page-header-left">
-
+    <div class="page-header-title">
     <h1>
       {{ title }}
     </h1>
-
     <p *ngIf="subtitle">
       {{ subtitle }}
     </p>
+    </div>
+      <app-tabs
+      *ngIf="tabs.length > 0"
+      [tabs]="tabs"
+      [activeTab]="activeTab"
+      (tabChange)="onTabChange($event)">
+    </app-tabs>
 
   </div>
-
   <div class="page-header-actions">
-
     <ng-content select="[header-actions]"></ng-content>
-
   </div>
-
 </div>

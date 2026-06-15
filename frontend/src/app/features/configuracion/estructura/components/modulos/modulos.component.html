@@ -1,0 +1,27 @@
+<app-data-table
+  title="Módulos"
+  subtitle="Gestiona los módulos principales del ERP"
+  [columns]="columns"
+  [data]="modulos"
+  [actions]="actions"
+  [loading]="loading"
+  [searchable]="true"
+  [filterable]="true"
+  [exportable]="true"
+  [paginated]="true"
+  [selectable]="true"
+  [showActions]="true"
+  (actionClick)="onTableAction($event)"
+  (export)="exportarModulos()">
+
+  <button
+    table-actions
+    class="btn-primary"
+    type="button"
+    (click)="nuevoModulo()">
+
+    Nuevo módulo
+
+  </button>
+
+</app-data-table>

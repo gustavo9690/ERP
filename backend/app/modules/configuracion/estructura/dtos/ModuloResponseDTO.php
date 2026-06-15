@@ -8,6 +8,8 @@ class ModuloResponseDTO
     public ?string $icono = null;
     public int $orden = 0;
     public int $estadoModulo = 1;
+    public ?Datetime $fechaCreacion = null;
+    public ?Datetime $fechaModificacion = null;
 
     public static function fromEntity(ModuloEntity $entity): self
     {
@@ -18,6 +20,9 @@ class ModuloResponseDTO
         $dto->icono    = $entity->icono;
         $dto->orden    = (int)($entity->orden ?? 0);
         $dto->estadoModulo   = (int)($entity->estadoModulo ?? 1);
+        $dto->fechaCreacion = $entity->fechaCreacion;
+        $dto->fechaModificacion = $entity->fechaModificacion;
+
 
         return $dto;
     }
@@ -30,7 +35,9 @@ class ModuloResponseDTO
             'codigoModulo'   => $this->codigoModulo,
             'icono'    => $this->icono,
             'orden'    => $this->orden,
-            'estadoModulo'   => $this->estadoModulo
+            'estadoModulo'   => $this->estadoModulo,
+            'fechaCreacion' => $this->fechaCreacion ? $this->fechaCreacion->format('Y-m-d H:i:s') : null,
+            'fechaModificacion' => $this->fechaModificacion ? $this->fechaModificacion->format('Y-m-d H:i:s') : null
         ];
     }
 

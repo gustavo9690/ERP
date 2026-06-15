@@ -21,19 +21,36 @@ abstract class Entity implements JsonSerializable
         $this->fill($data);
     }
 
-    public function fill(array $data): void
+   public function fill(array $data): void
     {
-        foreach ($data as $key => $value) {
-            if (array_key_exists($key, $this->attributes)) {
-                $this->attributes[$key] = $value;
-                continue;
+        foreach (static::$fields as $column => $config) {
+
+            $alias = $config['alias'] ?? $column;
+
+            if (array_key_exists($column, $data)) {
+                if(!isset($config['fk']) && !isset($config['embed'])){
+                    $this->attributes[$alias] = $this->castValue($data[$column], $config);
+                    continue;
+                }else{
+                    if($config['fk']==true && $config['embed']==true){
+                        $this->attributes[$alias] = $data[$column];
+                    }
+                      
+                }
             }
 
-            $alias = static::getAliasByColumn($key);
-
-            if ($alias !== null && array_key_exists($alias, $this->attributes)) {
-                $this->attributes[$alias] = $value;
+             if (array_key_exists($alias, $data)) {
+                if(!isset($config['fk']) && !isset($config['embed'])){
+                    $this->attributes[$alias] = $this->castValue($data[$alias], $config);
+                    continue;
+                }else{
+                    if($config['fk']==true && $config['embed']==true){
+                        $this->attributes[$alias] = $data[$alias];
+                    }
+                      
+                }
             }
+            
         }
     }
 
@@ -107,5 +124,24 @@ abstract class Entity implements JsonSerializable
     public static function getDeleteMode(): string
     {
         return static::$deleteMode;
+    }
+
+    protected function castValue(mixed $value, array $config): mixed
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        $type = $config['type'] ?? 'string';
+
+        return match ($type) {
+            'int' => (int) $value,
+            'float' => (float) $value,
+            'bool' => (bool) $value,
+            'datetime', 'timestamp' => $value instanceof DateTime
+                ? $value
+                : new DateTime($value),
+            default => $value
+        };
     }
 }

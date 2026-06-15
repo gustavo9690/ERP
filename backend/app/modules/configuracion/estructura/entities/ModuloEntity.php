@@ -36,11 +36,11 @@ class ModuloEntity extends Entity
         ],
         'fecha_creacion' => [
             'alias' => 'fechaCreacion',
-            'type'  => 'datetime'
+            'type'  => 'timestamp'
         ],
         'fecha_modificacion' => [
             'alias' => 'fechaModificacion',
-            'type'  => 'datetime'
+            'type'  => 'timestamp'
         ]
     ];
 }
