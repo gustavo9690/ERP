@@ -4,7 +4,6 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/ro
 import { MENU_CONFIG } from '../../../core/config/menu.config';
 import { filter } from 'rxjs/operators';
 import { AuthService } from '../../../core/services/auth.service';
-import { SessionService } from '../../../core/services/session.service';
 
 @Component({
   selector: 'app-header',
@@ -31,8 +30,7 @@ export class HeaderComponent {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private cdr: ChangeDetectorRef,
-    private sessionService: SessionService
+    private cdr: ChangeDetectorRef
   ) {}
 
   private isRefreshing = false;
@@ -125,13 +123,13 @@ export class HeaderComponent {
 
   getUserInitial(): string {
     console.log('Usuario:', this.user);
-    const name = this.user?.idEmpleado.nombres || 'U';
-    const apellido = this.user?.idEmpleado.apellidoPaterno || '';
+    const name = this.user?.nombres || 'U';
+    const apellido = this.user?.apellidoPaterno || '';
     return name.charAt(0).toUpperCase() + (apellido.charAt(0).toUpperCase() || ''); 
   }
 
   getUserName(): string {
-    return this.user?.idEmpleado.nombres+' '+this.user?.idEmpleado.apellidoPaterno+' '+this.user?.idEmpleado.apellidoMaterno || 'Usuario';
+    return this.user?.nombres+' '+this.user?.apellidoPaterno+' '+this.user?.apellidoMaterno || 'Usuario';
   }
   
 

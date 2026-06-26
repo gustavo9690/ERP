@@ -22,12 +22,10 @@ class LoginResponseDTO
     public function toArray(): array
     {
         return [
-            'idUsuario'  => $this->idUsuario,
-            'usuario'    => $this->usuario,
             'estado'     => $this->estado,
             'token'      => $this->token,
             'refreshToken' => $this->refreshToken,
-            'idEmpleado' => $this->idEmpleado
+            'usuario' => $this->idEmpleado
         ];
     }
 }

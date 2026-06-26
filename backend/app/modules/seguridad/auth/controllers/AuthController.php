@@ -14,7 +14,6 @@ class AuthController extends Controller
         try {
             $dto = LoginRequestDTO::fromRequest();
             $result = $this->service->login($dto);
-
             $this->success($result->toArray(), 'Login correcto');
 
         } catch (Exception $e) {
