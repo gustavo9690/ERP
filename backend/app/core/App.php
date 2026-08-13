@@ -7,44 +7,40 @@ class App
     public function __construct()
     {
         $this->router = new Router();
-
-        // 🔹 Configuración inicial del sistema
         $this->init();
     }
 
-    /* =====================================================
-       INICIALIZACIÓN
-    ===================================================== */
-
     private function init(): void
     {
-        // Aquí puedes cargar configs, timezone, etc.
+        // ✅ Toda la configuración pasa por tu clase Config
+        Config::init();
 
-        date_default_timezone_set('America/Lima');
-
-        // Manejo global de errores PHP
+        // Manejadores globales
         set_exception_handler([$this, 'handleException']);
+        set_error_handler(function ($severidad, $mensaje, $archivo, $linea) {
+            throw new ErrorException($mensaje, 0, $severidad, $archivo, $linea);
+        });
     }
-
-    /* =====================================================
-       EJECUCIÓN
-    ===================================================== */
 
     public function run(): void
     {
         try {
             $this->router->dispatch();
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $this->handleException($e);
         }
     }
 
-    /* =====================================================
-       MANEJO GLOBAL DE ERRORES
-    ===================================================== */
-
     public function handleException(Throwable $e): void
     {
-        Response::serverError($e->getMessage());
+        if (Config::$env === 'development') {
+            Response::serverError($e->getMessage(), [
+                'archivo' => $e->getFile(),
+                'linea'   => $e->getLine(),
+                'codigo'  => $e->getCode()
+            ]);
+        } else {
+            Response::serverError('Error interno del servidor');
+        }
     }
 }

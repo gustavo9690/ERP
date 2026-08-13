@@ -64,11 +64,15 @@ export class LoginComponent {
       },
       error: (error) => {
         this.loading = false;
-        this.errorMessage =
-          error?.error?.message ||   // 👈 MENSAJE DEL BACKEND
-          error?.message ||
-          'Error de autenticación';
-           this.cdr.detectChanges();
+        if (error.status === 0) {
+          this.errorMessage = 'El servidor no está disponible. Intente nuevamente más tarde.';
+        } else {
+          this.errorMessage =
+            error?.error?.message ||   // 👈 MENSAJE DEL BACKEND
+            error?.message ||
+            'Error de autenticación';
+        }
+        this.cdr.detectChanges();
       }
     });
   }
