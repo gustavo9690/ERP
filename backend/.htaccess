@@ -1,12 +1,12 @@
 RewriteEngine On
+RewriteBase /
 
-RewriteBase /ERP/backend/
+# ✅ EXCEPCIÓN CLAVE: si el archivo existe, NO redirijas
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
 
-# Si no es archivo ni carpeta real
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-
-# Enviar todo a index.php
+# ✅ Solo si NO existe, envía a index.php
 RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
 
 # Seguridad

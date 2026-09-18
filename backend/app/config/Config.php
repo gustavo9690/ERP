@@ -7,7 +7,7 @@ class Config
     public static bool $showErrors = true;
 
     // App
-    public static string $baseUrl = 'http://localhost/erp/';
+    public static string $baseUrl = 'http://localhost/';
     public static string $timezone = 'America/Lima';
     public static string $charset = 'UTF-8';
 
