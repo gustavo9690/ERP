@@ -23,7 +23,7 @@ class Config
     public static int $jwtExpire = 1000;
 
     // Database
-    public static string $dbHost = 'localhost';
+    public static string $dbHost = 'mysql';
     public static string $dbName = 'gp_systems';
     public static string $dbUser = 'root';
     public static string $dbPassword = 'root';
