@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   backend:
     build: ./backend
@@ -24,42 +26,48 @@ services:
     networks:
       - red_erp
 
-  frontend:
-    image: node:20
-    container_name: erp_frontend
-    working_dir: /app
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    ports:
-      - "4200:4200"
-    command: sh -c "npm install && ng serve --host 0.0.0.0 --port 4200"
-    depends_on:
-      - backend
-    networks:
-      - red_erp
-
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     container_name: erp_phpmyadmin
     ports:
       - "8081:80"
     environment:
-      PMA_HOST: host.docker.internal
+      PMA_HOST: mysql
       PMA_PORT: 3306
       PMA_USER: root
       PMA_PASSWORD: root
       MYSQL_ROOT_PASSWORD: root
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     depends_on:
       - mysql
     networks:
       - red_erp
 
-volumes:
-  mysql_datos:
+  frontend:
+    image: node:20
+    container_name: erp_frontend
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    ports:
+      - "4200:4200"
+    environment:
+      NODE_OPTIONS: "--max-old-space-size=2048"
+    command: >
+      sh -c "
+      npm install --no-audit --no-fund &&
+      npx ng serve --host 0.0.0.0 --port 4200 --no-watch
+      "
+    depends_on:
+      - backend
+    networks:
+      - red_erp
 
 networks:
   red_erp:
     driver: bridge
+
+# ⬇️ AQUÍ ESTÁ LO QUE FALTABA ⬇️
+volumes:
+  mysql_datos:
+  frontend_node_modules:
