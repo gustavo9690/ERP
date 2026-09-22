@@ -24,7 +24,7 @@ export class AuthService {
         if (response.success === true || response.status === 'success') {
           const token = response.data?.token;
           const refreshToken = response.data?.refreshToken;
-          const user = response.data?.usuario; 
+          const user = response.data; 
 
 
           if (token) {
